@@ -29,6 +29,7 @@ class Preload extends Phaser.Scene {
 		this.load.on(Phaser.Loader.Events.COMPLETE, () => {
 
 			//this.scene.start("Menu", {fromLoad: 1});
+			this.loadingText.text = "Load Completed";
 			this.scene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 2});
 		});
 	}
