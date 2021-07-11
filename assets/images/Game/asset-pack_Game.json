@@ -1,0 +1,313 @@
+{
+    "section1": {
+        "files": [
+            {
+                "url": "assets/images/UI/1_pause.png",
+                "type": "image",
+                "key": "1_pause"
+            },
+            {
+                "url": "assets/images/UI/1_result.png",
+                "type": "image",
+                "key": "1_result"
+            },
+            {
+                "url": "assets/images/UI/1_start.png",
+                "type": "image",
+                "key": "1_start"
+            },
+            {
+                "url": "assets/images/UI/2_pause.png",
+                "type": "image",
+                "key": "2_pause"
+            },
+            {
+                "url": "assets/images/UI/2_result.png",
+                "type": "image",
+                "key": "2_result"
+            },
+            {
+                "url": "assets/images/UI/2_start.png",
+                "type": "image",
+                "key": "2_start"
+            },
+            {
+                "url": "assets/images/UI/3_pause.png",
+                "type": "image",
+                "key": "3_pause"
+            },
+            {
+                "url": "assets/images/UI/3_result.png",
+                "type": "image",
+                "key": "3_result"
+            },
+            {
+                "url": "assets/images/UI/3_start.png",
+                "type": "image",
+                "key": "3_start"
+            },
+            {
+                "url": "assets/images/UI/adam.png",
+                "type": "image",
+                "key": "adam"
+            },
+            {
+                "url": "assets/images/UI/Asset 54.png",
+                "type": "image",
+                "key": "Asset 54"
+            },
+            {
+                "url": "assets/images/UI/Asset 55.png",
+                "type": "image",
+                "key": "Asset 55"
+            },
+            {
+                "url": "assets/images/UI/Asset 56.png",
+                "type": "image",
+                "key": "Asset 56"
+            },
+            {
+                "url": "assets/images/UI/base_result.png",
+                "type": "image",
+                "key": "base_result"
+            },
+            {
+                "url": "assets/images/UI/btn_home.png",
+                "type": "image",
+                "key": "btn_home"
+            },
+            {
+                "url": "assets/images/UI/btn_musicoff.png",
+                "type": "image",
+                "key": "btn_musicoff"
+            },
+            {
+                "url": "assets/images/UI/btn_musicon.png",
+                "type": "image",
+                "key": "btn_musicon"
+            },
+            {
+                "url": "assets/images/UI/btn_next.png",
+                "type": "image",
+                "key": "btn_next"
+            },
+            {
+                "url": "assets/images/UI/btn_no.png",
+                "type": "image",
+                "key": "btn_no"
+            },
+            {
+                "url": "assets/images/UI/btn_pause.png",
+                "type": "image",
+                "key": "btn_pause"
+            },
+            {
+                "url": "assets/images/UI/btn_play.png",
+                "type": "image",
+                "key": "btn_play"
+            },
+            {
+                "url": "assets/images/UI/btn_play2.png",
+                "type": "image",
+                "key": "btn_play2"
+            },
+            {
+                "url": "assets/images/UI/btn_replay.png",
+                "type": "image",
+                "key": "btn_replay"
+            },
+            {
+                "url": "assets/images/UI/btn_replay_1.png",
+                "type": "image",
+                "key": "btn_replay_1"
+            },
+            {
+                "url": "assets/images/UI/btn_yes.png",
+                "type": "image",
+                "key": "btn_yes"
+            },
+            {
+                "url": "assets/images/UI/confirm_base.png",
+                "type": "image",
+                "key": "confirm_base"
+            },
+            {
+                "url": "assets/images/Game/default_1.png",
+                "type": "image",
+                "key": "default_1"
+            },
+            {
+                "url": "assets/images/Game/default_2.png",
+                "type": "image",
+                "key": "default_2"
+            },
+            {
+                "url": "assets/images/Game/default_3.png",
+                "type": "image",
+                "key": "default_3"
+            },
+            {
+                "url": "assets/images/Game/GameBG_1.png",
+                "type": "image",
+                "key": "GameBG_1"
+            },
+            {
+                "url": "assets/images/Game/GameBG_2.png",
+                "type": "image",
+                "key": "GameBG_2"
+            },
+            {
+                "url": "assets/images/Game/GameBG_3.png",
+                "type": "image",
+                "key": "GameBG_3"
+            },
+            {
+                "url": "assets/scenes/GameOver.js",
+                "type": "sceneFile",
+                "key": "GameOver"
+            },
+            {
+                "url": "assets/images/UI/hand1.png",
+                "type": "image",
+                "key": "hand1"
+            },
+            {
+                "url": "assets/images/UI/hand2.png",
+                "type": "image",
+                "key": "hand2"
+            },
+            {
+                "url": "assets/images/Game/item1.png",
+                "type": "image",
+                "key": "item1"
+            },
+            {
+                "url": "assets/images/Game/item2.png",
+                "type": "image",
+                "key": "item2"
+            },
+            {
+                "url": "assets/images/Game/item3.png",
+                "type": "image",
+                "key": "item3"
+            },
+            {
+                "url": "assets/images/UI/joory.png",
+                "type": "image",
+                "key": "joory"
+            },
+            {
+                "url": "assets/images/UI/pause.png",
+                "type": "image",
+                "key": "pause"
+            },
+            {
+                "url": "assets/images/UI/pause_base.png",
+                "type": "image",
+                "key": "pause_base"
+            },
+            {
+                "url": "assets/images/UI/result_base.png",
+                "type": "image",
+                "key": "result_base"
+            },
+            {
+                "url": "assets/images/UI/s1.png",
+                "type": "image",
+                "key": "s1"
+            },
+            {
+                "url": "assets/images/UI/s2.png",
+                "type": "image",
+                "key": "s2"
+            },
+            {
+                "url": "assets/images/UI/s3.png",
+                "type": "image",
+                "key": "s3"
+            },
+            {
+                "url": "assets/images/Game/select_1.png",
+                "type": "image",
+                "key": "select_1"
+            },
+            {
+                "url": "assets/images/Game/select_2.png",
+                "type": "image",
+                "key": "select_2"
+            },
+            {
+                "url": "assets/images/Game/select_3.png",
+                "type": "image",
+                "key": "select_3"
+            },
+            {
+                "url": "assets/images/UI/sg1.png",
+                "type": "image",
+                "key": "sg1"
+            },
+            {
+                "url": "assets/images/UI/sg2.png",
+                "type": "image",
+                "key": "sg2"
+            },
+            {
+                "url": "assets/images/UI/sg3.png",
+                "type": "image",
+                "key": "sg3"
+            },
+            {
+                "url": "assets/images/Game/star.png",
+                "type": "image",
+                "key": "star"
+            },
+            {
+                "url": "assets/images/UI/start.png",
+                "type": "image",
+                "key": "start"
+            },
+            {
+                "url": "assets/images/UI/start1_base.png",
+                "type": "image",
+                "key": "start1_base"
+            },
+            {
+                "url": "assets/images/UI/start2_base.png",
+                "type": "image",
+                "key": "start2_base"
+            },
+            {
+                "url": "assets/images/UI/start3_base.png",
+                "type": "image",
+                "key": "start3_base"
+            },
+            {
+                "url": "assets/images/UI/timer.png",
+                "type": "image",
+                "key": "timer"
+            },
+            {
+                "url": "assets/images/UI/tinerbase.png",
+                "type": "image",
+                "key": "tinerbase"
+            },
+            {
+                "url": "assets/images/UI/txt_exit.png",
+                "type": "image",
+                "key": "txt_exit"
+            },
+            {
+                "url": "assets/images/UI/txt_restart.png",
+                "type": "image",
+                "key": "txt_restart"
+            }
+        ]
+    },
+    "meta": {
+        "app": "Phaser Editor 2D - Asset Pack Editor",
+        "contentType": "phasereditor2d.pack.core.AssetContentType",
+        "url": "https://phasereditor2d.com",
+        "version": 2,
+        "showAllFilesInBlocks": false
+    }
+}

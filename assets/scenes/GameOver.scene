@@ -1,0 +1,159 @@
+{
+    "id": "3f88ec7f-2e3b-4bab-b195-9122d35f2361",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "GameOver",
+        "borderWidth": 1280,
+        "borderHeight": 768
+    },
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "5baa3248-d34c-4312-834f-f4e63ca7ec7d",
+            "label": "result_base",
+            "components": [],
+            "texture": {
+                "key": "result_base"
+            },
+            "x": 640,
+            "y": 358
+        },
+        {
+            "type": "Image",
+            "id": "4dd50f06-fbc9-4df8-91d3-9215429afeb6",
+            "label": "sg1",
+            "components": [],
+            "texture": {
+                "key": "sg1"
+            },
+            "x": 460,
+            "y": 164
+        },
+        {
+            "type": "Image",
+            "id": "4b2154a2-2645-492f-9b0e-21673d9b9be9",
+            "label": "sg2",
+            "components": [],
+            "texture": {
+                "key": "sg2"
+            },
+            "x": 640,
+            "y": 137
+        },
+        {
+            "type": "Image",
+            "id": "914f6646-0091-4fef-befe-4dcedef7b83e",
+            "label": "sg3",
+            "components": [],
+            "texture": {
+                "key": "sg3"
+            },
+            "x": 820,
+            "y": 164
+        },
+        {
+            "type": "Image",
+            "id": "58173900-0b6d-4286-8481-050f66d72ae6",
+            "label": "joory",
+            "components": [],
+            "texture": {
+                "key": "joory"
+            },
+            "x": 1015,
+            "y": 703,
+            "originY": 1
+        },
+        {
+            "type": "Image",
+            "id": "963ac561-35ed-4428-8c7f-0f446b7ab1ba",
+            "label": "adam",
+            "components": [],
+            "texture": {
+                "key": "adam"
+            },
+            "x": 270,
+            "y": 703,
+            "originY": 1
+        },
+        {
+            "type": "Image",
+            "id": "7829249c-5a9b-43db-a8ff-ad63a7ab9a0e",
+            "label": "btn_home",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "btn_home"
+            },
+            "x": 640,
+            "y": 675
+        },
+        {
+            "type": "Image",
+            "id": "612cad4f-35e9-4b1e-82ec-751f19d3038d",
+            "label": "btn_replay",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "btn_replay"
+            },
+            "x": 490,
+            "y": 675
+        },
+        {
+            "type": "Image",
+            "id": "5a51745c-2b5f-46b9-9842-0a8a3bc54d1f",
+            "label": "btn_next",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "btn_next"
+            },
+            "x": 790,
+            "y": 675
+        },
+        {
+            "type": "Image",
+            "id": "365ac75b-86f7-4b68-97a1-15d362567123",
+            "label": "s1",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "s1"
+            },
+            "x": 460,
+            "y": 164
+        },
+        {
+            "type": "Image",
+            "id": "cb4f6703-fe1c-42cb-be26-2730bab895bf",
+            "label": "s2",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "s2"
+            },
+            "x": 640,
+            "y": 137
+        },
+        {
+            "type": "Image",
+            "id": "95f68237-33b4-458e-ad87-8fc3dc9bb4c6",
+            "label": "s3",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "s3"
+            },
+            "x": 820,
+            "y": 164
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType"
+    }
+}
