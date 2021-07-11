@@ -42,11 +42,6 @@ class CutScene extends Phaser.Scene {
 	
 		this.editorCreate();
 
-
-		//this.voRef = this.scene.get("CutScene").sound.add('intro_01');
-		//this.voRef.play();
-		//var dur = this.voRef.duration;
-		//dur = dur*1000;
 		var dur = 2000;
 
 		this.time.delayedCall(dur, this.timerEnd, null, this);

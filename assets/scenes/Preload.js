@@ -37,7 +37,6 @@ class Preload extends Phaser.Scene {
 		
 		this.load.pack("asset-pack", "assets/asset-pack.json");
 		this.load.pack("asset-pack_Game", "assets/images/Game/asset-pack_Game.json");
-		//this.load.pack("ap_Audio", "assets/audio/asset-pack_audio.json");
 	}
 	
 	_create() {
