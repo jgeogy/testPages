@@ -77,7 +77,6 @@ class Menu extends Phaser.Scene {
 	// Write your code here
 	init(data) {
 		this.fromLoad = data.fromLoad;
-		console.log(data);
 	}
 
 	create() {
@@ -154,8 +153,30 @@ class Menu extends Phaser.Scene {
 			sceneM.musicClicked();
 		});
 
+		var sceneM = this.scene.get("Menu");
 		//Start BGM
-		
+		if(!sceneM.sound.get('bgm')) {
+			//this.bgmRef = sceneM.sound.add('bgm');
+			//this.bgmRef.play();
+			//this.bgmRef.setLoop(true);
+			this.menu_MusicOffBTN.setVisible(false);
+			this.menu_MusicOffBTN.setActive(false);
+		} else if(sceneM.sound.get('bgm')) {
+			//this.bgmRef = sceneM.sound.get('bgm');
+			/*
+			if(this.bgmRef.mute) {
+				this.menu_MusicBTN.setActive(false);
+				this.menu_MusicBTN.setVisible(false);
+				this.menu_MusicOffBTN.setActive(true);
+				this.menu_MusicOffBTN.setVisible(true);
+			} else if(!this.bgmRef.mute) {
+				this.menu_MusicBTN.setActive(true);
+				this.menu_MusicBTN.setVisible(true);
+				this.menu_MusicOffBTN.setActive(false);
+				this.menu_MusicOffBTN.setVisible(false);
+			}
+			*/
+		}
 
 	}
 	
@@ -176,7 +197,19 @@ class Menu extends Phaser.Scene {
 
 	musicClicked() {
 		console.log("musicBTN clicked");
-		
+		if(this.bgmRef.mute) {				//unmute
+			this.bgmRef.setMute(false);
+			this.menu_MusicBTN.setActive(true);
+			this.menu_MusicBTN.setVisible(true);
+			this.menu_MusicOffBTN.setActive(false);
+			this.menu_MusicOffBTN.setVisible(false);
+		} else if(!this.bgmRef.mute) {		//mute
+			this.bgmRef.setMute(true);
+			this.menu_MusicBTN.setActive(false);
+			this.menu_MusicBTN.setVisible(false);
+			this.menu_MusicOffBTN.setActive(true);
+			this.menu_MusicOffBTN.setVisible(true);
+		}
 	}
 
 	/* END-USER-CODE */

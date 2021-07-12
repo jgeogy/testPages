@@ -258,7 +258,10 @@ class GameScene extends Phaser.Scene {
 		const mask = this.timerMask.createGeometryMask();
 		
 		this.timer.setMask(mask);
-		
+
+		//var voRef = this.sceneRef.sound.add('g5_17_we no longer have this');
+		//voRef.play();
+		//this.time.delayedCall(voRef.duration*1000, this.introTimerEnd, null, this);
 		this.time.delayedCall(2000, this.introTimerEnd, null, this);
 
 		var sceneG = this.scene.get("GameScene");
@@ -286,6 +289,15 @@ class GameScene extends Phaser.Scene {
 		this.btn_musicoff.setInteractive().on('pointerdown', function() {
 			sceneG.musicClicked();
 		});
+		/*
+		if(this.bgmRef.mute) {
+			this.btn_musicon.setVisible(false);
+			this.btn_musicon.setActive(false);
+		} else if(!this.bgmRef.mute) {
+			this.btn_musicoff.setVisible(false);
+			this.btn_musicoff.setActive(false);
+		}
+		*/
 
 		//For home btn
 		this.btn_home.setInteractive().on('pointerdown', function() {
@@ -619,6 +631,19 @@ class GameScene extends Phaser.Scene {
 			this.score++;
 			console.log("score: " + this.score);
 			this.numTimer.remove();
+
+			if(this.score % 5 == 0) {
+				var rando = Phaser.Math.RND.integerInRange(1,100);
+				if(rando < 25) {
+					//this.sceneRef.sound.play("general_07_well done");
+				} else if(rando >= 25 && rando < 50) {
+					//this.sceneRef.sound.play("general_08_haay");
+				} else if(rando >= 50 && rando < 75) {
+					//this.sceneRef.sound.play("general_09_woow");
+				} else if(rando >= 75) {
+					//this.sceneRef.sound.play("general_10_nice");
+				}
+			}
 			
 			//Add tween to number
 			this.tweens.add ({
@@ -634,6 +659,7 @@ class GameScene extends Phaser.Scene {
 	//Wrong hidden number is clicked
 	wrongNumClicked() {
 		if(this.numClickable && !this.gamePause) {
+			//this.sceneRef.sound.play("wrongchoicex");
 			this.numClickable = false;
 			this.wrongClickCount++;
 			console.log("wrong score: " + this.wrongClickCount);

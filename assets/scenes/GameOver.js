@@ -156,6 +156,9 @@ class GameOver extends Phaser.Scene {
 			});
 		}
 
+		//var voRef = sceneGO.sound.add('g6_02_done making');
+		//voRef.play();
+		//this.time.delayedCall(voRef.duration*1000, this.voTimerEnd, null, this);
 		this.time.delayedCall(2000, this.voTimerEnd, null, this);
 
 		this.btn_home.setActive(false);
