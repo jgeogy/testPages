@@ -23,8 +23,8 @@ class Preload extends Phaser.Scene {
 
 		this.load.on(Phaser.Loader.Events.PROGRESS, p => {
 
-			this.loadingText.text = "Loading Progress = " + Math.floor(p * 100) + "%"
-			if(Math.floor(p*100) == 100) {
+			this.loadingText.text = "Loading Progress = " + p * 100 + "%"
+			if(p == 1) {
 				this.loadingText.text = "loading completed progress";
 			}
 		});
