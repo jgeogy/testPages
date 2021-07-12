@@ -79,6 +79,11 @@ class Preload extends Phaser.Scene {
 		this.logText = logText;
 
 		this.logText.setWordWrapWidth(500);
+
+		if(this.sys.game.device.os.iOS) {
+			this.logText.text += " io";
+			this.logText.text += this.sys.game.device.os.iOSVersion;
+		}
 	}
 
 	/* END-USER-CODE */
