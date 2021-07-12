@@ -24,12 +24,15 @@ class Preload extends Phaser.Scene {
 		this.load.on(Phaser.Loader.Events.PROGRESS, p => {
 
 			this.loadingText.text = "Loading Progress = " + Math.floor(p * 100) + "%"
+			if(Math.floor(p*100) == 100) {
+				this.loadingText.text = "loading completed progress";
+			}
 		});
 
-		this.load.on(Phaser.Loader.Events.COMPLETE, () => {
-
+		this.load.on('complete', () => {
+			
 			//this.scene.start("Menu", {fromLoad: 1});
-			this.loadingText.text = "Load Completed";
+			this.loadingText.text = "loading completed complete";
 			this.scene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 2});
 		});
 	}
