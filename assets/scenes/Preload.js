@@ -26,6 +26,7 @@ class Preload extends Phaser.Scene {
 			this.loadingText.text = "Loading Progress = " + p * 100 + "%"
 			if(p == 1) {
 				this.loadingText.text = "loading completed progress";
+				this.scene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 1});
 			}
 		});
 
