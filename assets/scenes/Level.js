@@ -8,6 +8,31 @@ class Level extends Phaser.Scene {
 	constructor() {
 		super("Level");
 		
+		/** @type {Phaser.GameObjects.Image} */
+		this.background;
+		/** @type {Phaser.GameObjects.Image} */
+		this.blava2;
+		/** @type {Phaser.GameObjects.Image} */
+		this.blava3;
+		/** @type {Phaser.GameObjects.Image} */
+		this.blava1;
+		/** @type {MovingPlatform1} */
+		this.movingPlatform2;
+		/** @type {MovingPlatform2} */
+		this.movingPlatform1;
+		/** @type {MovingPlatform1} */
+		this.movingPlatform3;
+		/** @type {Phaser.GameObjects.Layer} */
+		this.playerLayer;
+		/** @type {Player} */
+		this.player;
+		/** @type {Phaser.GameObjects.Text} */
+		this.debugText;
+		/** @type {Array<Phaser.GameObjects.Image|MovingPlatform2|MovingPlatform1|Ladder>} */
+		this.platforms;
+		/** @type {FoodItem[]} */
+		this.foodItems;
+		
 		/* START-USER-CTR-CODE */
 		// Write your code here.
 		/* END-USER-CTR-CODE */
@@ -265,130 +290,92 @@ class Level extends Phaser.Scene {
 		// background (components)
 		const backgroundScrollFactor = new ScrollFactor(background);
 		backgroundScrollFactor.x = 0.1;
-		background.emit("components-awake");
 		
 		// blava2 (components)
 		const blava2ScrollFactor = new ScrollFactor(blava2);
 		blava2ScrollFactor.x = 1.2;
 		blava2ScrollFactor.y = 1;
-		blava2.emit("components-awake");
 		
 		// blava3 (components)
 		const blava3ScrollFactor = new ScrollFactor(blava3);
 		blava3ScrollFactor.x = 1.2;
 		blava3ScrollFactor.y = 1;
-		blava3.emit("components-awake");
 		
 		// blava1 (components)
 		const blava1ScrollFactor = new ScrollFactor(blava1);
 		blava1ScrollFactor.x = 1.2;
 		blava1ScrollFactor.y = 1;
-		blava1.emit("components-awake");
 		
 		// movingPlatform2 (components)
 		const movingPlatform2HorizontalMove = HorizontalMove.getComponent(movingPlatform2);
 		movingPlatform2HorizontalMove.horizVelocity = -50;
 		movingPlatform2HorizontalMove.minX = 540;
 		movingPlatform2HorizontalMove.maxX = 1170;
-		movingPlatform2.emit("components-awake");
 		
 		// movingPlatform1 (components)
 		const movingPlatform1HorizontalMove = HorizontalMove.getComponent(movingPlatform1);
 		movingPlatform1HorizontalMove.minX = 310;
 		movingPlatform1HorizontalMove.maxX = 924;
-		movingPlatform1.emit("components-awake");
 		
 		// p3 (components)
 		new PlatformPhysics(p3);
-		p3.emit("components-awake");
 		
 		// p2 (components)
 		new PlatformPhysics(p2);
-		p2.emit("components-awake");
 		
 		// p1 (components)
 		new PlatformPhysics(p1);
-		p1.emit("components-awake");
 		
 		// movingPlatform3 (components)
 		const movingPlatform3HorizontalMove = HorizontalMove.getComponent(movingPlatform3);
 		movingPlatform3HorizontalMove.horizVelocity = -50;
 		movingPlatform3HorizontalMove.minX = 1900;
 		movingPlatform3HorizontalMove.maxX = 2224;
-		movingPlatform3.emit("components-awake");
 		
 		// container_2_1 (components)
 		const container_2_1HorizontalMove = HorizontalMove.getComponent(container_2_1);
 		container_2_1HorizontalMove.minX = 1720;
 		container_2_1HorizontalMove.maxX = 2360;
-		container_2_1.emit("components-awake");
 		
 		// p8 (components)
 		new PlatformPhysics(p8);
-		p8.emit("components-awake");
 		
 		// p7 (components)
 		new PlatformPhysics(p7);
-		p7.emit("components-awake");
 		
 		// p6 (components)
 		new PlatformPhysics(p6);
-		p6.emit("components-awake");
 		
 		// p5 (components)
 		new PlatformPhysics(p5);
-		p5.emit("components-awake");
 		
 		// p12 (components)
 		new PlatformPhysics(p12);
-		p12.emit("components-awake");
 		
 		// p11 (components)
 		new PlatformPhysics(p11);
-		p11.emit("components-awake");
 		
 		// p10 (components)
 		new PlatformPhysics(p10);
-		p10.emit("components-awake");
 		
 		// volcano_Level_Set_Platformer___Brick_02_png_2_1 (components)
 		new PlatformPhysics(volcano_Level_Set_Platformer___Brick_02_png_2_1);
-		volcano_Level_Set_Platformer___Brick_02_png_2_1.emit("components-awake");
 		
 		// skull1 (components)
 		const skull1FollowObject = new FollowObject(skull1);
 		skull1FollowObject.target = movingPlatform3;
-		skull1.emit("components-awake");
 		
 		// lava2 (components)
 		const lava2FollowObject = new FollowObject(lava2);
 		lava2FollowObject.target = movingPlatform2;
-		lava2.emit("components-awake");
 		
 		// lava1 (components)
 		const lava1FollowObject = new FollowObject(lava1);
 		lava1FollowObject.target = movingPlatform1;
-		lava1.emit("components-awake");
-		
-		// ladder5 (components)
-		ladder5.emit("components-awake");
-		
-		// ladder4 (components)
-		ladder4.emit("components-awake");
-		
-		// ladder3 (components)
-		ladder3.emit("components-awake");
-		
-		// ladder2 (components)
-		ladder2.emit("components-awake");
-		
-		// ladder1 (components)
-		ladder1.emit("components-awake");
 		
 		// ladder6 (components)
 		const ladder6FollowObject = new FollowObject(ladder6);
 		ladder6FollowObject.target = movingPlatform2;
-		ladder6.emit("components-awake");
 		
 		// player (prefab fields)
 		player.platforms = platforms;
@@ -397,23 +384,19 @@ class Level extends Phaser.Scene {
 		// btn_left (components)
 		const btn_leftPlayerController = PlayerController.getComponent(btn_left);
 		btn_leftPlayerController.player = player;
-		btn_left.emit("components-awake");
 		
 		// btn_right (components)
 		const btn_rightPlayerController = PlayerController.getComponent(btn_right);
 		btn_rightPlayerController.player = player;
 		btn_rightPlayerController.direction = "right";
-		btn_right.emit("components-awake");
 		
 		// btn_up (components)
 		const btn_upPlayerController = PlayerController.getComponent(btn_up);
 		btn_upPlayerController.player = player;
 		btn_upPlayerController.direction = "up";
-		btn_up.emit("components-awake");
 		
 		// debugText (components)
 		new ScrollFactor(debugText);
-		debugText.emit("components-awake");
 		
 		this.background = background;
 		this.blava2 = blava2;
@@ -428,31 +411,6 @@ class Level extends Phaser.Scene {
 		this.platforms = platforms;
 		this.foodItems = foodItems;
 	}
-	
-	/** @type {Phaser.GameObjects.Image} */
-	background;
-	/** @type {Phaser.GameObjects.Image} */
-	blava2;
-	/** @type {Phaser.GameObjects.Image} */
-	blava3;
-	/** @type {Phaser.GameObjects.Image} */
-	blava1;
-	/** @type {MovingPlatform1} */
-	movingPlatform2;
-	/** @type {MovingPlatform2} */
-	movingPlatform1;
-	/** @type {MovingPlatform1} */
-	movingPlatform3;
-	/** @type {Phaser.GameObjects.Layer} */
-	playerLayer;
-	/** @type {Player} */
-	player;
-	/** @type {Phaser.GameObjects.Text} */
-	debugText;
-	/** @type {Array<Phaser.GameObjects.Image|MovingPlatform2|MovingPlatform1|Ladder>} */
-	platforms;
-	/** @type {FoodItem[]} */
-	foodItems;
 	
 	/* START-USER-CODE */
 

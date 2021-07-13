@@ -13,17 +13,6 @@
     },
     "displayList": [
         {
-            "type": "Image",
-            "id": "bc4eed2c-cc94-4f88-9642-07752f4ada52",
-            "label": "image",
-            "components": [],
-            "texture": {
-                "key": "dino"
-            },
-            "x": 604,
-            "y": 323
-        },
-        {
             "type": "Text",
             "id": "d0e68a62-86aa-47ea-bfce-b3cb13fd4521",
             "label": "loadingText",
@@ -35,7 +24,6 @@
             "fontSize": "48px"
         }
     ],
-    "plainObjects": [],
     "meta": {
         "app": "Phaser Editor 2D - Scene Editor",
         "url": "https://phasereditor2d.com",
