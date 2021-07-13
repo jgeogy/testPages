@@ -8,424 +8,394 @@ class Level extends Phaser.Scene {
 	constructor() {
 		super("Level");
 		
-		/** @type {Phaser.GameObjects.Image} */
-		this.background;
-		/** @type {Phaser.GameObjects.Image} */
-		this.blava2;
-		/** @type {Phaser.GameObjects.Image} */
-		this.blava3;
-		/** @type {Phaser.GameObjects.Image} */
-		this.blava1;
-		/** @type {MovingPlatform1} */
-		this.movingPlatform2;
-		/** @type {MovingPlatform2} */
-		this.movingPlatform1;
-		/** @type {MovingPlatform1} */
-		this.movingPlatform3;
-		/** @type {Phaser.GameObjects.Layer} */
-		this.playerLayer;
+		/** @type {Phaser.Tilemaps.TilemapLayer} */
+		this.layer;
 		/** @type {Player} */
 		this.player;
-		/** @type {Phaser.GameObjects.Text} */
-		this.debugText;
-		/** @type {Array<Phaser.GameObjects.Image|MovingPlatform2|MovingPlatform1|Ladder>} */
-		this.platforms;
-		/** @type {FoodItem[]} */
-		this.foodItems;
+		/** @type {Phaser.GameObjects.Image} */
+		this.left_button;
+		/** @type {Phaser.GameObjects.Image} */
+		this.right_button;
+		/** @type {Phaser.GameObjects.Image} */
+		this.jump_button;
+		/** @type {Array<Cherry|Gem>} */
+		this.items;
+		/** @type {Array<Frog|Opossum|Eagle>} */
+		this.enemies;
 		
 		/* START-USER-CTR-CODE */
 		// Write your code here.
 		/* END-USER-CTR-CODE */
 	}
 	
-	_create() {
+	editorCreate() {
 		
-		// backgroundLayer
-		const backgroundLayer = this.add.layer();
+		// map
+		const map = this.add.tilemap("map");
+		map.addTilesetImage("tileset", "tileset");
 		
-		// background
-		const background = this.add.image(0, 1, "Volcano Level Set_Background - Layer 00");
-		background.scaleX = 1.1;
-		background.scaleY = 1.1;
-		background.setOrigin(0, 0);
-		background.tintTopRight = 10494241;
-		background.tintBottomLeft = 7220011;
-		background.tintBottomRight = 2433506;
-		backgroundLayer.add(background);
+		// back3
+		const back3 = this.add.image(0, 0, "back");
+		back3.setOrigin(0, 0);
 		
-		// blava2
-		const blava2 = this.add.image(1334, 0, "Volcano Level Set_Background - Layer 01");
-		blava2.setOrigin(0, 0);
-		backgroundLayer.add(blava2);
+		// back2
+		const back2 = this.add.image(768, 0, "back");
+		back2.setOrigin(0, 0);
 		
-		// blava3
-		const blava3 = this.add.image(2668, 0, "Volcano Level Set_Background - Layer 01");
-		blava3.setOrigin(0, 0);
-		backgroundLayer.add(blava3);
+		// back1
+		const back1 = this.add.image(384, 0, "back");
+		back1.setOrigin(0, 0);
 		
-		// blava1
-		const blava1 = this.add.image(0, -1, "Volcano Level Set_Background - Layer 01");
-		blava1.setOrigin(0, 0);
-		backgroundLayer.add(blava1);
+		// middle5
+		const middle5 = this.add.image(528, 80, "middle");
+		middle5.setOrigin(0, 0);
 		
-		// platformBottomItemsLayer
-		const platformBottomItemsLayer = this.add.layer();
+		// middle4
+		const middle4 = this.add.image(704, 80, "middle");
+		middle4.setOrigin(0, 0);
 		
-		// signpost1
-		const signpost1 = this.add.image(1536, -344, "volcano", "Volcano Level Set_Environment - Signpost 01.png");
-		platformBottomItemsLayer.add(signpost1);
+		// middle3
+		const middle3 = this.add.image(880, 80, "middle");
+		middle3.setOrigin(0, 0);
 		
-		// platformsLayer
-		const platformsLayer = this.add.layer();
+		// middle2
+		const middle2 = this.add.image(176, 80, "middle");
+		middle2.setOrigin(0, 0);
 		
-		// movingPlatform2
-		const movingPlatform2 = new MovingPlatform1(this, 890, 256);
-		platformsLayer.add(movingPlatform2);
+		// middle1
+		const middle1 = this.add.image(352, 80, "middle");
+		middle1.setOrigin(0, 0);
 		
-		// movingPlatform1
-		const movingPlatform1 = new MovingPlatform2(this, 311, 577);
-		platformsLayer.add(movingPlatform1);
+		// middle
+		const middle = this.add.image(0, 80, "middle");
+		middle.setOrigin(0, 0);
 		
-		// p4
-		const p4 = this.add.image(128, 768, "volcano", "Volcano Level Set_Platformer - Ground Additional 01.png");
-		platformsLayer.add(p4);
+		// layer
+		const layer = map.createLayer("Tile Layer 1", ["tileset"], 0, 0);
 		
-		// p3
-		const p3 = this.add.image(256, 640, "volcano", "Volcano Level Set_Platformer - Ground 12.png");
-		platformsLayer.add(p3);
+		// tree
+		const tree = this.add.image(496, 67, "atlas-props", "tree");
+		tree.setOrigin(0, 0);
 		
-		// p2
-		const p2 = this.add.image(128, 640, "volcano", "Volcano Level Set_Platformer - Ground 11.png");
-		platformsLayer.add(p2);
+		// bush
+		const bush = this.add.image(160, 132, "atlas-props", "bush");
+		bush.setOrigin(0, 0);
 		
-		// p1
-		const p1 = this.add.image(0, 640, "volcano", "Volcano Level Set_Platformer - Ground 11.png");
-		platformsLayer.add(p1);
+		// sign
+		const sign = this.add.image(176, 300, "atlas-props", "sign");
+		sign.setOrigin(0, 0);
 		
-		// movingPlatform3
-		const movingPlatform3 = new MovingPlatform1(this, 1920, 0);
-		platformsLayer.add(movingPlatform3);
+		// skulls
+		const skulls = this.add.image(240, 310, "atlas-props", "skulls");
+		skulls.setOrigin(0, 0);
 		
-		// container_2_1
-		const container_2_1 = new MovingPlatform2(this, 1882, 590);
-		platformsLayer.add(container_2_1);
+		// face_block
+		const face_block = this.add.image(368, 304, "atlas-props", "face-block");
+		face_block.setOrigin(0, 0);
 		
-		// p9
-		const p9 = this.add.image(2880, 640, "volcano", "Volcano Level Set_Platformer - Ground Additional 02.png");
-		p9.setOrigin(0, 0);
-		platformsLayer.add(p9);
+		// shrooms
+		const shrooms = this.add.image(448, 320, "atlas-props", "shrooms");
+		shrooms.setOrigin(0, 0);
 		
-		// p8
-		const p8 = this.add.image(2816, 640, "volcano", "Volcano Level Set_Platformer - Ground 10.png");
-		platformsLayer.add(p8);
-		
-		// p7
-		const p7 = this.add.image(2944, 640, "volcano", "Volcano Level Set_Platformer - Ground 11.png");
-		platformsLayer.add(p7);
-		
-		// p6
-		const p6 = this.add.image(3073, 640, "volcano", "Volcano Level Set_Platformer - Ground 11.png");
-		platformsLayer.add(p6);
-		
-		// p5
-		const p5 = this.add.image(3200, 640, "volcano", "Volcano Level Set_Platformer - Ground 11.png");
-		platformsLayer.add(p5);
-		
-		// p12
-		const p12 = this.add.image(1536, 384, "volcano", "Volcano Level Set_Platformer - Stone.png");
-		platformsLayer.add(p12);
-		
-		// p11
-		const p11 = this.add.image(1536, -256, "volcano", "Volcano Level Set_Platformer - Stone.png");
-		platformsLayer.add(p11);
-		
-		// p10
-		const p10 = this.add.image(1664, -256, "volcano", "Volcano Level Set_Platformer - Stone.png");
-		platformsLayer.add(p10);
-		
-		// volcano_Level_Set_Environment___Crack_07_png
-		const volcano_Level_Set_Environment___Crack_07_png = this.add.image(117, 866, "volcano", "Volcano Level Set_Environment - Crack 07.png");
-		platformsLayer.add(volcano_Level_Set_Environment___Crack_07_png);
-		
-		// volcano_Level_Set_Environment___Crack_06_png
-		const volcano_Level_Set_Environment___Crack_06_png = this.add.image(212, 664, "volcano", "Volcano Level Set_Environment - Crack 06.png");
-		platformsLayer.add(volcano_Level_Set_Environment___Crack_06_png);
-		
-		// volcano_Level_Set_Environment___Crack_06_png_1
-		const volcano_Level_Set_Environment___Crack_06_png_1 = this.add.image(3098, 903, "volcano", "Volcano Level Set_Environment - Crack 06.png");
-		platformsLayer.add(volcano_Level_Set_Environment___Crack_06_png_1);
-		
-		// volcano_Level_Set_Environment___Crack_05_png
-		const volcano_Level_Set_Environment___Crack_05_png = this.add.image(2999, 698, "volcano", "Volcano Level Set_Environment - Crack 05.png");
-		platformsLayer.add(volcano_Level_Set_Environment___Crack_05_png);
-		
-		// volcano_Level_Set_Platformer___Brick_02_png_2_1
-		const volcano_Level_Set_Platformer___Brick_02_png_2_1 = this.add.image(1792, -256, "volcano", "Volcano Level Set_Platformer - Stone.png");
-		platformsLayer.add(volcano_Level_Set_Platformer___Brick_02_png_2_1);
-		
-		// platformTopItemsLayer
-		const platformTopItemsLayer = this.add.layer();
-		
-		// endFlag
-		const endFlag = this.add.image(2944, 526, "volcano", "Volcano Level Set_Environment - White Flag.png");
-		platformTopItemsLayer.add(endFlag);
-		
-		// signpost
-		const signpost = this.add.image(131, 519, "volcano", "Volcano Level Set_Environment - Signpost 01.png");
-		platformTopItemsLayer.add(signpost);
-		
-		// skull1
-		const skull1 = this.add.image(2093, -28, "volcano", "Volcano Level Set_Environment - Skull.png");
-		platformTopItemsLayer.add(skull1);
-		
-		// lava2
-		const lava2 = this.add.image(1059, 250, "volcano", "Volcano Level Set_Environment - Lava 03.png");
-		platformTopItemsLayer.add(lava2);
-		
-		// lava1
-		const lava1 = this.add.image(599, 576, "volcano", "Volcano Level Set_Environment - Lava 03.png");
-		platformTopItemsLayer.add(lava1);
-		
-		// lava3
-		const lava3 = this.add.image(233, 571, "volcano", "Volcano Level Set_Environment - Lava 02.png");
-		platformTopItemsLayer.add(lava3);
-		
-		// laddersLayer
-		const laddersLayer = this.add.layer();
-		
-		// ladder5
-		const ladder5 = new Ladder(this, 1468, -150, "volcano", "Volcano Level Set_Platformer - Ladder.png");
-		laddersLayer.add(ladder5);
-		
-		// ladder4
-		const ladder4 = new Ladder(this, 1472, -272, "volcano", "Volcano Level Set_Platformer - Ladder.png");
-		laddersLayer.add(ladder4);
-		
-		// ladder3
-		const ladder3 = new Ladder(this, 1475, -22, "volcano", "Volcano Level Set_Platformer - Ladder.png");
-		laddersLayer.add(ladder3);
-		
-		// ladder2
-		const ladder2 = new Ladder(this, 1467, 106, "volcano", "Volcano Level Set_Platformer - Ladder.png");
-		laddersLayer.add(ladder2);
-		
-		// ladder1
-		const ladder1 = new Ladder(this, 1475, 208);
-		laddersLayer.add(ladder1);
-		
-		// ladder6
-		const ladder6 = new Ladder(this, 952, 321);
-		laddersLayer.add(ladder6);
-		
-		// playerLayer
-		const playerLayer = this.add.layer();
-		
-		// player
-		const player = new Player(this, 94, 395);
-		playerLayer.add(player);
-		
-		// pickItemsLayer
-		const pickItemsLayer = this.add.layer();
-		
-		// meet3
-		const meet3 = new FoodItem(this, 1232, 33, "volcano", "Volcano Level Set_Collectable Object - Meat.png");
-		pickItemsLayer.add(meet3);
-		
-		// meet2
-		const meet2 = new FoodItem(this, 2250, 278, "volcano", "Volcano Level Set_Collectable Object - Meat.png");
-		pickItemsLayer.add(meet2);
-		
-		// banana
-		const banana = new FoodItem(this, 480, 680, "volcano", "Tiny Caveman_Game Object - Banana.png");
-		pickItemsLayer.add(banana);
-		
-		// apple
-		const apple = new FoodItem(this, 600, 160, "volcano", "Tiny Caveman_Game Object - Apple.png");
-		pickItemsLayer.add(apple);
+		// house
+		const house = this.add.image(768, 53, "atlas-props", "house");
+		house.setOrigin(0, 0);
 		
 		// cherry
-		const cherry = new FoodItem(this, 1200, 680, "volcano", "Tiny Caveman_Game Object - Cherry.png");
-		pickItemsLayer.add(cherry);
+		const cherry = new Cherry(this, 480, 80);
+		this.add.existing(cherry);
 		
-		// apple2
-		const apple2 = new FoodItem(this, 2480, 680, "volcano", "Tiny Caveman_Game Object - Apple.png");
-		pickItemsLayer.add(apple2);
+		// cherry_1
+		const cherry_1 = new Cherry(this, 496, 80);
+		this.add.existing(cherry_1);
 		
-		// banana1
-		const banana1 = new FoodItem(this, 1760, 680, "volcano", "Tiny Caveman_Game Object - Banana.png");
-		pickItemsLayer.add(banana1);
+		// cherry_2
+		const cherry_2 = new Cherry(this, 512, 80);
+		this.add.existing(cherry_2);
 		
-		// meet1
-		const meet1 = new FoodItem(this, 747, 386);
-		pickItemsLayer.add(meet1);
+		// cherry_3
+		const cherry_3 = new Cherry(this, 368, 273);
+		this.add.existing(cherry_3);
 		
-		// controlsLayer
-		const controlsLayer = this.add.layer();
+		// cherry_4
+		const cherry_4 = new Cherry(this, 400, 272);
+		this.add.existing(cherry_4);
 		
-		// btn_left
-		const btn_left = new PlayerButton(this, 880, 640, "ui", "btn-left");
-		controlsLayer.add(btn_left);
+		// cherry_5
+		const cherry_5 = new Cherry(this, 384, 272);
+		this.add.existing(cherry_5);
 		
-		// btn_right
-		const btn_right = new PlayerButton(this, 1080, 640, "ui", "btn-right");
-		controlsLayer.add(btn_right);
+		// gem
+		const gem = new Gem(this, 64, 96);
+		this.add.existing(gem);
 		
-		// btn_up
-		const btn_up = new PlayerButton(this, 126, 640);
-		controlsLayer.add(btn_up);
+		// gem_1
+		const gem_1 = new Gem(this, 48, 96);
+		this.add.existing(gem_1);
 		
-		// debugLayer
-		const debugLayer = this.add.layer();
+		// gem_2
+		const gem_2 = new Gem(this, 80, 96);
+		this.add.existing(gem_2);
 		
-		// debugText
-		const debugText = this.add.text(224, -106, "", {});
-		debugText.text = "Debug text.";
-		debugText.setStyle({"fontSize":"42px"});
-		debugLayer.add(debugText);
+		// gem_3
+		const gem_3 = new Gem(this, 672, 256);
+		this.add.existing(gem_3);
+		
+		// gem_1_1
+		const gem_1_1 = new Gem(this, 672, 208);
+		this.add.existing(gem_1_1);
+		
+		// gem_2_1
+		const gem_2_1 = new Gem(this, 704, 192);
+		this.add.existing(gem_2_1);
+		
+		// frog
+		const frog = new Frog(this, 240, 144);
+		this.add.existing(frog);
+		
+		// frog_1
+		const frog_1 = new Frog(this, 553, 324);
+		this.add.existing(frog_1);
+		
+		// eagle
+		const eagle = new Eagle(this, 528, 96);
+		this.add.existing(eagle);
+		
+		// eagle_2
+		const eagle_2 = new Eagle(this, 96, 96);
+		this.add.existing(eagle_2);
+		
+		// opossum
+		const opossum = new Opossum(this, 678, 147);
+		this.add.existing(opossum);
+		
+		// opossum_1
+		const opossum_1 = new Opossum(this, 368, 320);
+		this.add.existing(opossum_1);
+		
+		// player
+		const player = new Player(this, 738, 121);
+		this.add.existing(player);
+		player.flipX = true;
+		
+		// left_button
+		const left_button = this.add.image(26, 170, "left-button");
+		left_button.scaleX = 0.39899614692006335;
+		left_button.scaleY = 0.39899614692006335;
+		left_button.tintTopLeft = 16627125;
+		
+		// right_button
+		const right_button = this.add.image(70, 170, "right-button");
+		right_button.scaleX = 0.39899614692006335;
+		right_button.scaleY = 0.39899614692006335;
+		right_button.tintTopLeft = 16627125;
+		
+		// jump_button
+		const jump_button = this.add.image(262, 170, "jump-button");
+		jump_button.scaleX = 0.39899614692006335;
+		jump_button.scaleY = 0.39899614692006335;
+		jump_button.tintTopLeft = 16627125;
 		
 		// lists
-		const platforms = [p1, p2, movingPlatform1, movingPlatform2, movingPlatform3, container_2_1, p8, p6, p5, p9, p7, p12, volcano_Level_Set_Platformer___Brick_02_png_2_1, p10, p11, p3, ladder1, ladder2, ladder3, ladder5, ladder4, ladder6]
-		const foodItems = [meet1, banana1, apple2, cherry, banana, meet3, meet2, apple]
+		const items = [cherry, cherry_1, cherry_2, cherry_3, cherry_4, cherry_5, gem, gem_1, gem_2, gem_3, gem_1_1, gem_2_1]
+		const enemies = [frog_1, frog, opossum_1, opossum, eagle, eagle_2]
 		
-		// background (components)
-		const backgroundScrollFactor = new ScrollFactor(background);
-		backgroundScrollFactor.x = 0.1;
+		// eagle (components)
+		const eagleCharacterMove = new CharacterMove(eagle);
+		eagleCharacterMove.deltaY = 50;
+		eagleCharacterMove.duration = 1000;
 		
-		// blava2 (components)
-		const blava2ScrollFactor = new ScrollFactor(blava2);
-		blava2ScrollFactor.x = 1.2;
-		blava2ScrollFactor.y = 1;
+		// eagle_2 (components)
+		const eagle_2CharacterMove = new CharacterMove(eagle_2);
+		eagle_2CharacterMove.deltaY = 50;
+		eagle_2CharacterMove.duration = 1000;
 		
-		// blava3 (components)
-		const blava3ScrollFactor = new ScrollFactor(blava3);
-		blava3ScrollFactor.x = 1.2;
-		blava3ScrollFactor.y = 1;
+		// left_button (components)
+		new FixedToCamera(left_button);
+		new ControllerButton(left_button);
 		
-		// blava1 (components)
-		const blava1ScrollFactor = new ScrollFactor(blava1);
-		blava1ScrollFactor.x = 1.2;
-		blava1ScrollFactor.y = 1;
+		// right_button (components)
+		new FixedToCamera(right_button);
+		new ControllerButton(right_button);
 		
-		// movingPlatform2 (components)
-		const movingPlatform2HorizontalMove = HorizontalMove.getComponent(movingPlatform2);
-		movingPlatform2HorizontalMove.horizVelocity = -50;
-		movingPlatform2HorizontalMove.minX = 540;
-		movingPlatform2HorizontalMove.maxX = 1170;
+		// jump_button (components)
+		new FixedToCamera(jump_button);
+		new ControllerButton(jump_button);
 		
-		// movingPlatform1 (components)
-		const movingPlatform1HorizontalMove = HorizontalMove.getComponent(movingPlatform1);
-		movingPlatform1HorizontalMove.minX = 310;
-		movingPlatform1HorizontalMove.maxX = 924;
-		
-		// p3 (components)
-		new PlatformPhysics(p3);
-		
-		// p2 (components)
-		new PlatformPhysics(p2);
-		
-		// p1 (components)
-		new PlatformPhysics(p1);
-		
-		// movingPlatform3 (components)
-		const movingPlatform3HorizontalMove = HorizontalMove.getComponent(movingPlatform3);
-		movingPlatform3HorizontalMove.horizVelocity = -50;
-		movingPlatform3HorizontalMove.minX = 1900;
-		movingPlatform3HorizontalMove.maxX = 2224;
-		
-		// container_2_1 (components)
-		const container_2_1HorizontalMove = HorizontalMove.getComponent(container_2_1);
-		container_2_1HorizontalMove.minX = 1720;
-		container_2_1HorizontalMove.maxX = 2360;
-		
-		// p8 (components)
-		new PlatformPhysics(p8);
-		
-		// p7 (components)
-		new PlatformPhysics(p7);
-		
-		// p6 (components)
-		new PlatformPhysics(p6);
-		
-		// p5 (components)
-		new PlatformPhysics(p5);
-		
-		// p12 (components)
-		new PlatformPhysics(p12);
-		
-		// p11 (components)
-		new PlatformPhysics(p11);
-		
-		// p10 (components)
-		new PlatformPhysics(p10);
-		
-		// volcano_Level_Set_Platformer___Brick_02_png_2_1 (components)
-		new PlatformPhysics(volcano_Level_Set_Platformer___Brick_02_png_2_1);
-		
-		// skull1 (components)
-		const skull1FollowObject = new FollowObject(skull1);
-		skull1FollowObject.target = movingPlatform3;
-		
-		// lava2 (components)
-		const lava2FollowObject = new FollowObject(lava2);
-		lava2FollowObject.target = movingPlatform2;
-		
-		// lava1 (components)
-		const lava1FollowObject = new FollowObject(lava1);
-		lava1FollowObject.target = movingPlatform1;
-		
-		// ladder6 (components)
-		const ladder6FollowObject = new FollowObject(ladder6);
-		ladder6FollowObject.target = movingPlatform2;
-		
-		// player (prefab fields)
-		player.platforms = platforms;
-		player.foodItems = foodItems;
-		
-		// btn_left (components)
-		const btn_leftPlayerController = PlayerController.getComponent(btn_left);
-		btn_leftPlayerController.player = player;
-		
-		// btn_right (components)
-		const btn_rightPlayerController = PlayerController.getComponent(btn_right);
-		btn_rightPlayerController.player = player;
-		btn_rightPlayerController.direction = "right";
-		
-		// btn_up (components)
-		const btn_upPlayerController = PlayerController.getComponent(btn_up);
-		btn_upPlayerController.player = player;
-		btn_upPlayerController.direction = "up";
-		
-		// debugText (components)
-		new ScrollFactor(debugText);
-		
-		this.background = background;
-		this.blava2 = blava2;
-		this.blava3 = blava3;
-		this.blava1 = blava1;
-		this.movingPlatform2 = movingPlatform2;
-		this.movingPlatform1 = movingPlatform1;
-		this.movingPlatform3 = movingPlatform3;
-		this.playerLayer = playerLayer;
+		this.layer = layer;
 		this.player = player;
-		this.debugText = debugText;
-		this.platforms = platforms;
-		this.foodItems = foodItems;
+		this.left_button = left_button;
+		this.right_button = right_button;
+		this.jump_button = jump_button;
+		this.map = map;
+		this.items = items;
+		this.enemies = enemies;
 	}
 	
 	/* START-USER-CODE */
 
 	create() {
 
-		this._create();		
+		this.editorCreate();
 
-		this.cameras.main.setBounds(0, -800, 3000, 750 + 800);
-		this.cameras.main.startFollow(this.player);		
+		this.initColliders();
 
-		this.time.delayedCall(2000, this.timerEnd, null, this);
+		this.bindKeys();
+
+		this.initCamera();
 	}
-	
-	timerEnd() {
-		this.scene.start("CutScene");
+
+	initCamera() {
+
+		const cam = this.cameras.main;
+		cam.setBounds(0, 0, this.layer.width, this.layer.height);
+		cam.setRoundPixels(true);
+	}
+
+
+	update() {
+
+		this.movePlayer();
+
+		const cam = this.cameras.main;
+
+		const col = Math.floor(this.player.x / cam.width);
+		const row = Math.floor(this.player.y / cam.height);
+
+		cam.scrollX = col * cam.width;
+		cam.scrollY = row * cam.height;
+	}
+
+	movePlayer() {
+
+		if (this.player.hurtFlag) {
+
+			return;
+		}
+
+		const body = this.player.getBody();
+
+		const jumpDown = this.wasd.jump.isDown || ControllerButton.getComponent(this.jump_button).isDown;
+		const leftDown = this.wasd.left.isDown || ControllerButton.getComponent(this.left_button).isDown;
+		const rightDown = this.wasd.right.isDown || ControllerButton.getComponent(this.right_button).isDown;
+
+		if (jumpDown && body.onFloor()) {
+
+			this.player.body.velocity.y = -170;
+		}
+
+		var vel = 150;
+
+		if (leftDown) {
+
+			this.player.body.velocity.x = -vel;
+			this.player.play("player/run/player-run", true);
+			this.player.flipX = true;
+
+		} else if (rightDown) {
+
+			this.player.body.velocity.x = vel;
+			this.player.play("player/run/player-run", true);
+			this.player.flipX = false;
+
+		} else {
+
+			this.player.body.velocity.x = 0;
+
+			if (this.wasd.crouch.isDown) {
+
+				this.player.play("player/crouch/player-crouch", true);
+
+			} else {
+
+				this.player.play("player/idle/player-idle", true);
+			}
+		}
+
+		// jump animation
+
+		if (this.player.body.velocity.y < 0) {
+
+			this.player.play("player/jump/player-jump-1", true);
+
+		} else if (this.player.body.velocity.y > 0) {
+
+			this.player.play("player/jump/player-jump-2", true);
+		}
+	}
+
+	bindKeys() {
+
+		this.wasd = {
+			jump: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE, true),
+			left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT, true),
+			right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT, true),
+			crouch: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN, true)
+		};
+	}
+
+
+	initColliders() {
+
+		this.map.setCollision([27, 29, 31, 33, 35, 37, 77, 81, 86, 87, 127, 129, 131, 133, 134, 135, 83, 84, 502, 504, 505, 529, 530, 333, 335, 337, 339, 366, 368, 262, 191, 193, 195, 241, 245, 291, 293, 295]);
+		this.setTopCollisionTiles([35, 36, 84, 86, 134, 135, 366, 367, 368, 262]);
+
+		this.physics.add.collider(this.player, this.layer);
+		this.physics.add.collider(this.enemies, this.layer);
+		this.physics.add.overlap(this.player, this.items, this.pickItem, null, this);
+		this.physics.add.overlap(this.player, this.enemies, this.checkAgainstEnemies, null, this);
+	}
+
+	/**
+	 * @param {Player} player
+	 * @param {Phaser.GameObjects.Sprite} enemy
+	 */
+	checkAgainstEnemies(player, enemy) {
+
+		if ((player.y + player.body.height * 0.5 < enemy.y) && player.body.velocity.y > 0) {
+
+			this.add.existing(new EnemyDeath(this, enemy.x, enemy.y));
+
+			enemy.destroy();
+
+			player.body.velocity.y = -200;
+
+		} else {
+
+			this.player.hurtPlayer();
+		}
+	}	
+
+	/**
+	 * @param {Player} player
+	 * @param {Phaser.GameObjects.Sprite} item
+	 */
+	pickItem(player, item) {
+
+		this.add.existing(new FeedbackItem(this, item.x, item.y));
+
+		item.destroy();
+	}
+
+	/**
+	 * @param {number[]} tiles
+	 */
+	setTopCollisionTiles(tiles) {
+
+		const tileSet = new Set(tiles);
+
+		for (let x = 0; x < this.map.width; x++) {
+
+			for (let y = 0; y < this.map.height; y++) {
+
+				const tile = this.layer.getTileAt(x, y);
+
+				if (tile && tileSet.has(tile.index)) {
+
+					tile.setCollision(false, false, true, false);
+				}
+			}
+		}
 	}
 
 	/* END-USER-CODE */
