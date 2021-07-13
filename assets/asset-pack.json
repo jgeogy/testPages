@@ -7,11 +7,6 @@
                 "key": "animations"
             },
             {
-                "url": "assets/Background/CUTSCENES_WORLDOFNUMBERS.png",
-                "type": "image",
-                "key": "CUTSCENES_WORLDOFNUMBERS"
-            },
-            {
                 "url": [
                     "assets/audio/dead.mp3"
                 ],
