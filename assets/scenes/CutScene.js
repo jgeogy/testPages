@@ -6,7 +6,7 @@
 class CutScene extends Phaser.Scene {
 	
 	constructor() {
-		super("CutScene");
+		super("Cuts");
 		
 		/* START-USER-CTR-CODE */
 		// Write your code here.

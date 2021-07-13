@@ -7,11 +7,6 @@
                 "key": "animations"
             },
             {
-                "url": "assets/scenes/CutScene.js",
-                "type": "sceneFile",
-                "key": "CutScene"
-            },
-            {
                 "url": "assets/Background/CUTSCENES_WORLDOFNUMBERS.png",
                 "type": "image",
                 "key": "CUTSCENES_WORLDOFNUMBERS"

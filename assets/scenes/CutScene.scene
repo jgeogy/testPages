@@ -4,7 +4,7 @@
     "settings": {
         "preloadPackFiles": [],
         "createMethodName": "_create",
-        "sceneKey": "CutScene",
+        "sceneKey": "Cuts",
         "borderWidth": 1200,
         "borderHeight": 750
     },
