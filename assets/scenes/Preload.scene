@@ -1,14 +1,40 @@
 {
-    "id": "be909459-5c07-4121-8eb2-3d94d285750d",
+    "id": "c44173cc-f52f-4ce5-9cbe-def0bbc2452b",
     "sceneType": "SCENE",
     "settings": {
-        "preloadPackFiles": [],
-        "createMethodName": "editorCreate",
+        "preloadMethodName": "_preload",
+        "preloadPackFiles": [
+            "Volcano/assets/asset-pack.json"
+        ],
+        "createMethodName": "_create",
         "sceneKey": "Preload",
-        "borderWidth": 1280,
-        "borderHeight": 768
+        "borderWidth": 1200,
+        "borderHeight": 750
     },
-    "displayList": [],
+    "displayList": [
+        {
+            "type": "Image",
+            "id": "bc4eed2c-cc94-4f88-9642-07752f4ada52",
+            "label": "image",
+            "components": [],
+            "texture": {
+                "key": "dino"
+            },
+            "x": 604,
+            "y": 323
+        },
+        {
+            "type": "Text",
+            "id": "d0e68a62-86aa-47ea-bfce-b3cb13fd4521",
+            "label": "loadingText",
+            "scope": "CLASS",
+            "components": [],
+            "x": 600,
+            "y": 375,
+            "text": "Loading",
+            "fontSize": "48px"
+        }
+    ],
     "plainObjects": [],
     "meta": {
         "app": "Phaser Editor 2D - Scene Editor",
