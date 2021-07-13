@@ -13,6 +13,7 @@
             "type": "Image",
             "id": "c85134fd-a991-42de-b4c7-30c2a01cbce9",
             "label": "cUTSCENES_WORLDOFNUMBERS",
+            "scope": "CLASS",
             "components": [],
             "texture": {
                 "key": "CUTSCENES_WORLDOFNUMBERS"

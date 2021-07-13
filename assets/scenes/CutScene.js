@@ -16,8 +16,13 @@ class CutScene extends Phaser.Scene {
 	editorCreate() {
 		
 		// cUTSCENES_WORLDOFNUMBERS
-		this.add.image(612, 384, "CUTSCENES_WORLDOFNUMBERS");
+		const cUTSCENES_WORLDOFNUMBERS = this.add.image(612, 384, "CUTSCENES_WORLDOFNUMBERS");
+		
+		this.cUTSCENES_WORLDOFNUMBERS = cUTSCENES_WORLDOFNUMBERS;
 	}
+	
+	/** @type {Phaser.GameObjects.Image} */
+	cUTSCENES_WORLDOFNUMBERS;
 	
 	/* START-USER-CODE */
 	
@@ -27,7 +32,7 @@ class CutScene extends Phaser.Scene {
 	
 		this.editorCreate();
 
-		this.time.delayedCall(2000, this.timerEnd, null, this);
+		//this.time.delayedCall(2000, this.timerEnd, null, this);
 	}
 	
 	timerEnd() {

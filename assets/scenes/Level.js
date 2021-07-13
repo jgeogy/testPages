@@ -420,6 +420,12 @@ class Level extends Phaser.Scene {
 
 		this.cameras.main.setBounds(0, -800, 3000, 750 + 800);
 		this.cameras.main.startFollow(this.player);		
+
+		this.time.delayedCall(2000, this.timerEnd, null, this);
+	}
+	
+	timerEnd() {
+		this.scene.start("CutScene");
 	}
 
 	/* END-USER-CODE */
