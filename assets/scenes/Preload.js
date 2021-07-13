@@ -47,7 +47,7 @@ class Preload extends Phaser.Scene {
 
 		this.load.on(Phaser.Loader.Events.COMPLETE, () => {
 
-			this.scene.start("Level");
+			this.scene.start("CutScene");
 		});
 	}
 	/* END-USER-CODE */
