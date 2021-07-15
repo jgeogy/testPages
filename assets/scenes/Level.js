@@ -411,6 +411,8 @@ class Level extends Phaser.Scene {
 		this.platforms = platforms;
 		this.foodItems = foodItems;
 	}
+
+	img;
 	
 	/* START-USER-CODE */
 
@@ -421,7 +423,14 @@ class Level extends Phaser.Scene {
 		this.cameras.main.setBounds(0, -800, 3000, 750 + 800);
 		this.cameras.main.startFollow(this.player);		
 
-		this.add.image(640,384, "indicator-8");
+		const temp = this.add.image(640,384, "indicator-8");
+		this.img = temp;
+
+		this.time.delayedCall(1000, this.timerEnd, null, this);
+	}
+
+	timerEnd() {
+		this.img.x += 300;
 	}
 
 	/* END-USER-CODE */
