@@ -11,7 +11,6 @@ class Level extends Phaser.Scene {
 		/* START-USER-CTR-CODE */
 		// Write your code here.
 		this.img;
-		this.justANum;
 		/* END-USER-CTR-CODE */
 	}
 	
@@ -533,12 +532,10 @@ class Level extends Phaser.Scene {
 		this.img = temp;
 
 		this.time.delayedCall(1000, this.timerEnd, null, this);
-		this.justANum = 10;
 	}
 
 	timerEnd() {
-		this.justANum = -300;
-		this.img.x += this.justANum;
+		this.img.x += 300;
 	}
 
 	/* END-USER-CODE */
