@@ -55,16 +55,6 @@
                 "key": "components"
             },
             {
-                "url": "assets/scenes/CutScene.js",
-                "type": "sceneFile",
-                "key": "CutScene"
-            },
-            {
-                "url": "assets/images/CutScene/CUTSCENES_WORLDOFNUMBERS.png",
-                "type": "image",
-                "key": "CUTSCENES_WORLDOFNUMBERS"
-            },
-            {
                 "url": "assets/images/load/indicator-8.png",
                 "type": "image",
                 "key": "indicator-8"

@@ -191,7 +191,7 @@ class Menu extends Phaser.Scene {
 	}
 
 	menuClicked() {
-		this.scene.start("CutScene", {levelNum: 1, levelDiff: 1});
+		//this.scene.start("CutScene", {levelNum: 1, levelDiff: 1});
 	}
 
 	musicClicked() {
