@@ -18,7 +18,7 @@ class Loading extends Phaser.Scene {
 		this.load.pack("asset-pack", "assets/asset-pack.json");
 
 		this.load.on(Phaser.Loader.Events.COMPLETE, () => {
-			this.scene.start("Menu");
+			this.scene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 1});
 		});
 	}
 	

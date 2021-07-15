@@ -19,6 +19,17 @@
             },
             "x": 628,
             "y": 395
+        },
+        {
+            "type": "Image",
+            "id": "bb7db219-d763-47ff-863f-c8447139e45b",
+            "label": "asset_15_8",
+            "components": [],
+            "texture": {
+                "key": "Asset 15-8"
+            },
+            "x": 640,
+            "y": 267
         }
     ],
     "plainObjects": [],
