@@ -533,7 +533,8 @@ class Level extends Phaser.Scene {
 		this.img = temp;
 
 		this.time.delayedCall(1000, this.timerEnd, null, this);
-		this.justANum = 10;
+		const justANum = 10;
+		this.justANum = justANum;
 	}
 
 	timerEnd() {
