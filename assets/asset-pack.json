@@ -2,47 +2,47 @@
     "section1": {
         "files": [
             {
-                "url": "assets/images/menu/Asset 14-8.png",
+                "url": "assets/images/Asset 14-8.png",
                 "type": "image",
                 "key": "Asset 14-8"
             },
             {
-                "url": "assets/images/menu/Asset 15-8.png",
+                "url": "assets/images/Asset 15-8.png",
                 "type": "image",
                 "key": "Asset 15-8"
             },
             {
-                "url": "assets/images/menu/Asset 16-8.png",
+                "url": "assets/images/Asset 16-8.png",
                 "type": "image",
                 "key": "Asset 16-8"
             },
             {
-                "url": "assets/images/menu/Asset 17-8.png",
+                "url": "assets/images/Asset 17-8.png",
                 "type": "image",
                 "key": "Asset 17-8"
             },
             {
-                "url": "assets/images/menu/Asset 18-8.png",
+                "url": "assets/images/Asset 18-8.png",
                 "type": "image",
                 "key": "Asset 18-8"
             },
             {
-                "url": "assets/images/menu/Asset 19-8.png",
+                "url": "assets/images/Asset 19-8.png",
                 "type": "image",
                 "key": "Asset 19-8"
             },
             {
-                "url": "assets/images/menu/Asset 20-8.png",
+                "url": "assets/images/Asset 20-8.png",
                 "type": "image",
                 "key": "Asset 20-8"
             },
             {
-                "url": "assets/images/menu/Asset 21-8.png",
+                "url": "assets/images/Asset 21-8.png",
                 "type": "image",
                 "key": "Asset 21-8"
             },
             {
-                "url": "assets/images/load/bg-8.png",
+                "url": "assets/images/bg-8.png",
                 "type": "image",
                 "key": "bg-8"
             },
@@ -55,17 +55,22 @@
                 "key": "components"
             },
             {
-                "url": "assets/images/load/indicator-8.png",
+                "url": "assets/dino.png",
+                "type": "image",
+                "key": "dino"
+            },
+            {
+                "url": "assets/images/indicator-8.png",
                 "type": "image",
                 "key": "indicator-8"
             },
             {
-                "url": "assets/images/load/loading bar-8.png",
+                "url": "assets/images/loading bar-8.png",
                 "type": "image",
                 "key": "loading bar-8"
             },
             {
-                "url": "assets/images/load/loading-8.png",
+                "url": "assets/images/loading-8.png",
                 "type": "image",
                 "key": "loading-8"
             },

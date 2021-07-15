@@ -1,0 +1,18 @@
+{
+    "id": "d6b9649c-8f3b-48bb-b6c3-5d887d7c6fec",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [
+            "WoN Reset/assets/asset-pack.json"
+        ],
+        "createMethodName": "editorCreate",
+        "sceneKey": "Loading"
+    },
+    "displayList": [],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType"
+    }
+}

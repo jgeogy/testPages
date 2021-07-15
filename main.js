@@ -2,19 +2,16 @@
 window.addEventListener('load', function () {
 
 	var game = new Phaser.Game({
-		width: 1280,
-		height: 768,
+		width: 800,
+		height: 600,
 		type: Phaser.AUTO,
-        backgroundColor: "#555555",
+        backgroundColor: "#242424",
 		scale: {
 			mode: Phaser.Scale.FIT,
 			autoCenter: Phaser.Scale.CENTER_BOTH
-		},
-		input: {
-			activePointers: 1
 		}
 	});
 	
-	game.scene.add("Preload", Preload, true);
+	game.scene.add("Loading", Loading, true);
 
 });
