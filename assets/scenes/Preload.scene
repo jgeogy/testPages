@@ -1,29 +1,15 @@
 {
-    "id": "c44173cc-f52f-4ce5-9cbe-def0bbc2452b",
+    "id": "be909459-5c07-4121-8eb2-3d94d285750d",
     "sceneType": "SCENE",
     "settings": {
-        "preloadMethodName": "_preload",
-        "preloadPackFiles": [
-            "Volcano/assets/asset-pack.json"
-        ],
-        "createMethodName": "_create",
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
         "sceneKey": "Preload",
-        "borderWidth": 1200,
-        "borderHeight": 750
+        "borderWidth": 1280,
+        "borderHeight": 768
     },
-    "displayList": [
-        {
-            "type": "Text",
-            "id": "d0e68a62-86aa-47ea-bfce-b3cb13fd4521",
-            "label": "loadingText",
-            "scope": "CLASS",
-            "components": [],
-            "x": 600,
-            "y": 375,
-            "text": "Loading",
-            "fontSize": "48px"
-        }
-    ],
+    "displayList": [],
+    "plainObjects": [],
     "meta": {
         "app": "Phaser Editor 2D - Scene Editor",
         "url": "https://phasereditor2d.com",
