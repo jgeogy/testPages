@@ -32,6 +32,8 @@ class Level extends Phaser.Scene {
 		this.platforms;
 		/** @type {FoodItem[]} */
 		this.foodItems;
+
+		this.img;
 		
 		/* START-USER-CTR-CODE */
 		// Write your code here.
@@ -411,8 +413,6 @@ class Level extends Phaser.Scene {
 		this.platforms = platforms;
 		this.foodItems = foodItems;
 	}
-
-	img;
 	
 	/* START-USER-CODE */
 
