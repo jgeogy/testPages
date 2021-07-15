@@ -420,6 +420,8 @@ class Level extends Phaser.Scene {
 
 		this.cameras.main.setBounds(0, -800, 3000, 750 + 800);
 		this.cameras.main.startFollow(this.player);		
+
+		this.add.image(640,384, "indicator-8");
 	}
 
 	/* END-USER-CODE */
