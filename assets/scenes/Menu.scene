@@ -23,13 +23,61 @@
         {
             "type": "Image",
             "id": "bb7db219-d763-47ff-863f-c8447139e45b",
-            "label": "asset_15_8",
+            "label": "Title_BG",
+            "scope": "CLASS",
             "components": [],
             "texture": {
                 "key": "Asset 15-8"
             },
             "x": 640,
-            "y": 267
+            "y": -204
+        },
+        {
+            "type": "Image",
+            "id": "601d7dcc-de82-43f2-a5a8-6271226b2362",
+            "label": "Menu_Title",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Asset 14-8"
+            },
+            "x": 640,
+            "y": 197
+        },
+        {
+            "type": "Image",
+            "id": "f8c2f8cf-48bd-4858-b56e-94ff55311302",
+            "label": "Menu_Adam",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Asset 19-8"
+            },
+            "x": 270,
+            "y": 1099
+        },
+        {
+            "type": "Image",
+            "id": "118013fd-e1a4-4bdb-8155-8fbbb2302a4e",
+            "label": "Menu_Joury",
+            "scope": "CLASS",
+            "components": [],
+            "texture": {
+                "key": "Asset 20-8"
+            },
+            "x": 1018,
+            "y": 1125
+        },
+        {
+            "type": "Image",
+            "id": "dd17b1c5-3835-4893-8c7d-1b752aece8dd",
+            "label": "Menu_Number",
+            "components": [],
+            "texture": {
+                "key": "Asset 16-8"
+            },
+            "x": 640,
+            "y": 937
         }
     ],
     "plainObjects": [],
