@@ -72,6 +72,7 @@
             "type": "Image",
             "id": "dd17b1c5-3835-4893-8c7d-1b752aece8dd",
             "label": "Menu_Number",
+            "scope": "CLASS",
             "components": [],
             "texture": {
                 "key": "Asset 16-8"

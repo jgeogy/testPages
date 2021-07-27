@@ -34,12 +34,13 @@ class Menu extends Phaser.Scene {
 		const menu_Joury = this.add.image(1018, 1125, "Asset 20-8");
 		
 		// Menu_Number
-		this.add.image(640, 937, "Asset 16-8");
+		const menu_Number = this.add.image(640, 937, "Asset 16-8");
 		
 		this.title_BG = title_BG;
 		this.menu_Title = menu_Title;
 		this.menu_Adam = menu_Adam;
 		this.menu_Joury = menu_Joury;
+		this.menu_Number = menu_Number;
 	}
 	
 	/** @type {Phaser.GameObjects.Image} */
@@ -50,6 +51,8 @@ class Menu extends Phaser.Scene {
 	menu_Adam;
 	/** @type {Phaser.GameObjects.Image} */
 	menu_Joury;
+	/** @type {Phaser.GameObjects.Image} */
+	menu_Number;
 	
 	/* START-USER-CODE */
 	
