@@ -1,5 +1,5 @@
 var config = {
-  type: Phaser.AUTO,
+  type: Phaser.CANVAS,
   width: 1280,
   height: 768,
   backgroundColor: "#555555",
