@@ -10,7 +10,7 @@ var config = {
 	input: {
 		activePointers: 1
 	},
-  scene: [ Load, Menu, Cutscene ]
+  scene: [ Menu, Cutscene ]
 
 }
 
