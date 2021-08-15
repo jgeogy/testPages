@@ -1,3 +1,4 @@
+"use strict";
 class Load extends Phaser.Scene {
   constructor() {
     "use strict";
