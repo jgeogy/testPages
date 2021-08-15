@@ -1,5 +1,6 @@
 class Load extends Phaser.Scene {
   constructor() {
+    "use strict";
     super({key: "Load"});
 
     this.loadTxt;
@@ -7,6 +8,7 @@ class Load extends Phaser.Scene {
 
 
   preload() {
+    "use strict";
     const loadTxt = this.add.text(600, 375, "", {});
     loadTxt.setOrigin(0.5, 0.5);
     loadTxt.text = "Loading";
@@ -29,10 +31,12 @@ class Load extends Phaser.Scene {
   }
 
   init(data) {
+    "use strict";
 
   }
 
   create() {
+    "use strict";
 
   }
 
