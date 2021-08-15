@@ -19,8 +19,8 @@ class Load extends Phaser.Scene {
     this.load.image('LoadIndicator', 'assets/images/load/dino.png');
     this.load.image('CSBG', 'assets/images/cutscene/csbg.png');
 
-    this.load.on(Phaser.Loader.Events.PROGRESS, p => {
-			this.loadTxt.text = "Loading " + p * 100 + "%";
+    this.load.on('progress', function (p) {
+			loadTxt.text = "Loading " + p * 100 + "%";
 		});
 
     this.load.on(Phaser.Loader.Events.COMPLETE, () => {
