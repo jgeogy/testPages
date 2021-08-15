@@ -14,6 +14,7 @@ class Load extends Phaser.Scene {
     loadTxt.setStyle({"fontSize":"48px"});
 
     this.loadTxt = loadTxt;
+    var myScene = this.scene;
 
     this.load.image('LoadBG', 'assets/images/load/bg.png');
     this.load.image('LoadIndicator', 'assets/images/load/dino.png');
@@ -23,8 +24,8 @@ class Load extends Phaser.Scene {
 			loadTxt.text = "Loading " + p * 100 + "%";
 		});
 
-    this.load.on(Phaser.Loader.Events.COMPLETE, () => {
-      this.scene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 2});
+    this.load.on('complete', function () {
+      myScene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 2});
     });
 
   }
