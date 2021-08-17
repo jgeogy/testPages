@@ -22,19 +22,21 @@ class Preload extends Phaser.Scene {
 
 		this._preload();
 
-		this.load.on(Phaser.Loader.Events.PROGRESS, p => {
+		var me = this;
 
-			this.loadingText.text = "Loading " + p * 100 + "%"
+		this.load.on('progress', function(p) {
+
+			me.loadingText.text = "Loading " + p * 100 + "%"
 			if(p == 1) {
 				//this.loadingText.text = p;
 			}
 		});
 
-		this.load.on('complete', () => {
+		this.load.on('complete', function() {
 			//this.loadingText.text = "loading completed progress";
 			//this.scene.start("Menu", {fromLoad: 1});
-			this.scene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 2});
-			this.logText.text += "||complete called";
+			me.scene.start("Menu", {fromLoad: 1, levelNum: 1, levelDiff: 2});
+			me.logText.text += "||complete called";
 		});
 
 		this.load.on('loaderror', f => {
