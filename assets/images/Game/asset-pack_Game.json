@@ -162,11 +162,6 @@
                 "key": "GameBG_3"
             },
             {
-                "url": "assets/scenes/GameOver.js",
-                "type": "sceneFile",
-                "key": "GameOver"
-            },
-            {
                 "url": "assets/images/UI/hand1.png",
                 "type": "image",
                 "key": "hand1"
