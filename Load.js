@@ -66,7 +66,7 @@ var Load = /*#__PURE__*/function (_Phaser$Scene) {
       this.load.image('MusicBTN', 'assets/images/menu/Asset 18-8.png');
       this.load.image('MusicOffBTN', 'assets/images/menu/btn_musicoff.png'); //Audio
 
-      this.load.audio('bgm', ['assets/audio/bgm.mp3', 'assets/audio/bgm.ogg']);
+      this.load.audio('bgm', 'assets/audio/bgm.ogg');
       this.load.audio('intro_01', ['assets/audio/intro_01.mp3', 'assets/audio/intro_01.ogg']);
       this.load.audio('g5_17_we no longer have this', ['assets/audio/g5_17_we no longer have this.mp3', 'assets/audio/g5_17_we no longer have this.ogg']);
       this.load.audio('g6_02_done making', ['assets/audio/g6_02_done making.mp3', 'assets/audio/g6_02_done making.ogg']);
