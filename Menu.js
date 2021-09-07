@@ -115,7 +115,7 @@ class Menu extends Phaser.Scene {
 		//Start BGM
     if(this.bgmRef == null) {
       this.bgmRef = new Howl({
-          src: ['assets/audio/bgm.mp3','assets/audio/bgm.ogg'],
+          src: ['assets/audio/bgm.mp3','assets/audio/bgm.ogg','assets/audio/bgm.wav','assets/audio/bgm.m4a'],
           loop: true
       });
 
