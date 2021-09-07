@@ -114,10 +114,14 @@ class Menu extends Phaser.Scene {
 		var sceneM = this.scene.get("Menu");
 		//Start BGM
     if(this.bgmRef == null) {
+      //Howler.usingWebAudio = false;
       this.bgmRef = new Howl({
           src: ['assets/audio/bgm.mp3','assets/audio/bgm.ogg','assets/audio/bgm.wav','assets/audio/bgm.m4a'],
           loop: true
       });
+      if(Howler.usingWebAudio) {
+        this.title2.alpha = 0.5;
+      }
 
       this.bgmRef.play();
 			this.musicOffBTN.setVisible(false);
