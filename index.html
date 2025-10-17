@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Zombie Land</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico?v=2">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+  </head>
+  <body>
+    <div class="ambient-overlay" id="ambient-overlay"></div>
+    
+    <!-- Notice Popup -->
+    <div class="notice-popup" id="notice-popup">
+      <div class="notice-content">
+        <div class="notice-heading">Notice</div>
+        <div class="notice-message">This game requires an internet connection to play.</div>
+        <button class="notice-button" id="notice-ok-button">OK</button>
+      </div>
+    </div>
+    
+    <div id="unity-container">
+      <canvas id="unity-canvas" width=720 height=1280 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+    </div>
+    <script>
+      window.addEventListener("load", function () {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("ServiceWorker.js");
+        }
+      });
+
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var warningBanner = document.querySelector("#unity-warning");
+      var ambientOverlay = document.querySelector("#ambient-overlay");
+      var noticePopup = document.querySelector("#notice-popup");
+      var noticeOkButton = document.querySelector("#notice-ok-button");
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/ZombieLandWebgl.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/ZombieLandWebgl.data",
+        frameworkUrl: buildUrl + "/ZombieLandWebgl.framework.js",
+        codeUrl: buildUrl + "/ZombieLandWebgl.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "ZestfulGames",
+        productName: "ZombieLand",
+        productVersion: "0.1",
+        showBanner: unityShowBanner,
+      };
+
+      // By default Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      config.matchWebGLToCanvasSize = false;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      }
+
+      // Show notice popup first
+      noticePopup.classList.add('active');
+      
+      // Handle OK button click
+      noticeOkButton.addEventListener('click', function() {
+        noticePopup.classList.add('closing');
+        // Wait for animation to complete before hiding and starting game
+        setTimeout(() => {
+          noticePopup.classList.remove('active', 'closing');
+          // Start loading the game after popup is closed
+          startGame();
+        }, 300);
+      });
+      
+      function startGame() {
+        loadingBar.style.display = "block";
+
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          
+          // Function to maintain portrait aspect ratio
+          function maintainPortraitAspect() {
+            const container = document.getElementById('unity-container');
+            const canvas = document.getElementById('unity-canvas');
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+            
+            // Calculate the maximum size that fits within the container while maintaining 9:16 aspect ratio
+            const aspectRatio = 9/16;
+            let canvasWidth, canvasHeight;
+            
+            if (containerWidth / containerHeight > aspectRatio) {
+              // Container is wider than our aspect ratio, so height is the limiting factor
+              canvasHeight = containerHeight;
+              canvasWidth = containerHeight * aspectRatio;
+            } else {
+              // Container is taller than our aspect ratio, so width is the limiting factor
+              canvasWidth = containerWidth;
+              canvasHeight = containerWidth / aspectRatio;
+            }
+            
+            // Set canvas size
+            canvas.style.width = canvasWidth + 'px';
+            canvas.style.height = canvasHeight + 'px';
+            
+            // Update Unity's internal canvas size
+            if (unityInstance) {
+              unityInstance.SetFullscreen(0);
+            }
+          }
+          
+          // Initial sizing
+          maintainPortraitAspect();
+          
+          // Handle window resize
+          window.addEventListener('resize', maintainPortraitAspect);
+          
+          // Ambient mode functionality
+          function updateAmbientMode() {
+            try {
+              // Create a temporary canvas to sample colors
+              const tempCanvas = document.createElement('canvas');
+              const tempCtx = tempCanvas.getContext('2d');
+              tempCanvas.width = canvas.width;
+              tempCanvas.height = canvas.height;
+              
+              // Draw the main canvas to the temp canvas
+              tempCtx.drawImage(canvas, 0, 0);
+              
+              // Sample colors from different areas of the canvas
+              const samplePoints = [
+                { x: canvas.width * 0.25, y: canvas.height * 0.25 },
+                { x: canvas.width * 0.75, y: canvas.height * 0.25 },
+                { x: canvas.width * 0.5, y: canvas.height * 0.5 },
+                { x: canvas.width * 0.25, y: canvas.height * 0.75 },
+                { x: canvas.width * 0.75, y: canvas.height * 0.75 }
+              ];
+              
+              let totalR = 0, totalG = 0, totalB = 0;
+              let validSamples = 0;
+              
+              samplePoints.forEach(point => {
+                const pixelData = tempCtx.getImageData(point.x, point.y, 1, 1).data;
+                const r = pixelData[0];
+                const g = pixelData[1];
+                const b = pixelData[2];
+                
+                // Skip very dark or very bright pixels
+                const brightness = (r + g + b) / 3;
+                if (brightness > 20 && brightness < 235) {
+                  totalR += r;
+                  totalG += g;
+                  totalB += b;
+                  validSamples++;
+                }
+              });
+              
+              if (validSamples > 0) {
+                const avgR = Math.round(totalR / validSamples);
+                const avgG = Math.round(totalG / validSamples);
+                const avgB = Math.round(totalB / validSamples);
+                
+                // Create ambient gradient
+                const ambientGradient = `radial-gradient(ellipse at center, rgba(${avgR}, ${avgG}, ${avgB}, 0.15) 0%, rgba(${avgR}, ${avgG}, ${avgB}, 0.05) 50%, transparent 70%)`;
+                ambientOverlay.style.background = ambientGradient;
+                ambientOverlay.classList.add('active');
+              } else {
+                // Fallback to subtle white ambient
+                ambientOverlay.style.background = 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%)';
+                ambientOverlay.classList.add('active');
+              }
+              
+            } catch (error) {
+              // Fallback if there's any error
+              ambientOverlay.style.background = 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.5) 0%, transparent 70%)';
+              ambientOverlay.classList.add('active');
+            }
+          }
+          
+          // Start ambient mode after a short delay
+          setTimeout(() => {
+            updateAmbientMode();
+            // Update ambient mode every 2 seconds
+            setInterval(updateAmbientMode, 2000);
+          }, 1000);
+          
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+      }
+    </script>
+  </body>
+</html>
