@@ -1,0 +1,161 @@
+body { 
+  padding: 0; 
+  margin: 0; 
+  background: #050505;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ambient mode overlay */
+.ambient-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.ambient-overlay.active {
+  opacity: 1;
+}
+
+/* Notice popup styles */
+.notice-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.notice-popup.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Animation keyframes for bounce effect */
+@keyframes popupBounce {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes popupFadeOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+.notice-content {
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 45px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transform: scale(0.3);
+  opacity: 0;
+}
+
+.notice-popup.active .notice-content {
+  animation: popupBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.notice-popup.closing .notice-content {
+  animation: popupFadeOut 0.3s ease-in forwards;
+}
+
+.notice-heading {
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  font-family: Arial, sans-serif;
+}
+
+.notice-message {
+  color: #cccccc;
+  font-size: 20px;
+  line-height: 1.5;
+  margin-bottom: 35px;
+  font-family: Arial, sans-serif;
+}
+
+.notice-button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.notice-button:hover {
+  background: #45a049;
+}
+
+.notice-button:active {
+  transform: scale(0.98);
+}
+
+#unity-container { 
+  position: relative; 
+  width: 100vw; 
+  height: 100vh; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#unity-canvas { 
+  max-width: 100vw; 
+  max-height: 100vh; 
+  width: auto;
+  height: auto;
+  background: #050505;
+  /* Force portrait aspect ratio */
+  aspect-ratio: 9/16;
+  object-fit: contain;
+}
+#unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
+#unity-logo { width: 154px; height: 130px; background: url('unity-logo-dark.png') no-repeat center }
+#unity-progress-bar-empty { margin-left: auto; margin-right: auto; width: 141px; height: 18px; margin-top: 10px; background: url('progress-bar-empty-dark.png') no-repeat center }
+#unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
+#unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
