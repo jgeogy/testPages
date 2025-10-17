@@ -1,249 +1,140 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Zombie Land 6</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico?v=2">
+    <title>ZombieLand</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-    <link rel="manifest" href="manifest.webmanifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 
     <style>
-      /* MODIFIED: Ensure html and body take up full width and height */
-      html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-      }
+        /* MODIFIED: Ensure html and body take up full width and height */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: #000; /* Black background for letterboxing */
+        }
 
-      /* MODIFIED: Make the container fill the screen absolutely */
-      #unity-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+        /* MODIFIED: Make the container fill the screen absolutely for centering */
+        #unity-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-      /* MODIFIED: Removed max-width as JS handles sizing */
-      #unity-canvas {
-        display: block;
-        touch-action: none;
-      }
+        /* Let the JS handle the canvas sizing */
+        #unity-canvas {
+            background: #000; /* Set canvas background to prevent flash of white */
+            /* width and height will be set by our script */
+        }
     </style>
-  </head>
-  <body>
-    <div class="ambient-overlay" id="ambient-overlay"></div>
-    
-    <div class="notice-popup" id="notice-popup">
-      <div class="notice-content">
-        <div class="notice-heading">Notice</div>
-        <div class="notice-message">This game requires an internet connection to play.</div>
-        <button class="notice-button" id="notice-ok-button">OK</button>
-      </div>
-    </div>
-    
+</head>
+<body>
     <div id="unity-container">
-      <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+        <canvas id="unity-canvas" width=720 height=1280 tabindex="-1"></canvas>
+        <div id="unity-loading-bar">
+            <div id="unity-logo"></div>
+            <div id="unity-progress-bar-empty">
+                <div id="unity-progress-bar-full"></div>
+            </div>
         </div>
-      </div>
-      <div id="unity-warning"></div>
+        <div id="unity-warning"></div>
     </div>
 
     <script>
-      window.addEventListener("load", function () {
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.register("ServiceWorker.js");
-        }
-      });
-
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var warningBanner = document.querySelector("#unity-warning");
-      var ambientOverlay = document.querySelector("#ambient-overlay");
-      var noticePopup = document.querySelector("#notice-popup");
-      var noticeOkButton = document.querySelector("#notice-ok-button");
       var unityInstance = null;
 
       function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
+        // This function is provided by Unity by default
       }
 
+      // =====================================================================
+      // ADDED: SCRIPT TO HANDLE PORTRAIT ASPECT RATIO
+      // =====================================================================
+      function resizeCanvas() {
+        // Define your target portrait aspect ratio (width / height)
+        const targetAspectRatio = 9 / 16;
+
+        // Get the browser's visible area size. visualViewport is best for mobile.
+        const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+        const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
+        let newWidth, newHeight;
+
+        // Check if the current window is wider than our target ratio (e.g., a PC monitor)
+        if (vw / vh > targetAspectRatio) {
+          // If so, the height is the limiting factor. Set height to 100% and scale width.
+          newHeight = vh;
+          newWidth = newHeight * targetAspectRatio;
+        } else {
+          // Otherwise, the width is the limiting factor (e.g., a mobile phone)
+          newWidth = vw;
+          newHeight = newWidth / targetAspectRatio;
+        }
+
+        // Apply the new dimensions to the canvas's style
+        canvas.style.width = `${newWidth}px`;
+        canvas.style.height = `${newHeight}px`;
+      }
+
+      // Run the resize function once on load and whenever the window is resized.
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', resizeCanvas);
+      }
+      // =====================================================================
+      // END OF ADDED SCRIPT
+      // =====================================================================
+
+
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/ZombieLandWebgl.loader.js";
+      var loaderUrl = buildUrl + "/Zombieland.loader.js";
       var config = {
-        dataUrl: buildUrl + "/ZombieLandWebgl.data",
-        frameworkUrl: buildUrl + "/ZombieLandWebgl.framework.js",
-        codeUrl: buildUrl + "/ZombieLandWebgl.wasm",
+        dataUrl: buildUrl + "/Zombieland.data",
+        frameworkUrl: buildUrl + "/Zombieland.framework.js",
+        codeUrl: buildUrl + "/Zombieland.wasm",
+        memoryUrl: buildUrl + "/",
+        symbolsUrl: buildUrl + "/",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "ZestfulGames",
         productName: "ZombieLand",
-        productVersion: "0.1",
+        productVersion: "0.2",
         showBanner: unityShowBanner,
       };
 
-      config.matchWebGLToCanvasSize = false;
+      // REMOVED: This line prevents Unity from matching the WebGL resolution
+      // to our new dynamic canvas size, which would result in a blurry image.
+      // config.matchWebGLToCanvasSize = false;
 
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-      }
-
-      // ✅ Proper viewport sizing for mobile + tablets
-      function updateViewportHeight() {
-        const height = window.innerHeight;
-        container.style.height = height + 'px';
-      }
-
-      window.addEventListener('resize', updateViewportHeight);
-      window.addEventListener('orientationchange', updateViewportHeight);
-      updateViewportHeight();
-
-      // Notice popup logic
-      noticePopup.classList.add('active');
-      noticeOkButton.addEventListener('click', function() {
-        noticePopup.classList.add('closing');
-        setTimeout(() => {
-          noticePopup.classList.remove('active', 'closing');
-          startGame();
-        }, 300);
-      });
-
-      function startGame() {
-        loadingBar.style.display = "block";
-        var script = document.createElement("script");
-        script.src = loaderUrl;
-        script.onload = () => {
-          createUnityInstance(canvas, config, (progress) => {
-            progressBarFull.style.width = 100 * progress + "%";
-          }).then((instance) => {
-            unityInstance = instance;
-            loadingBar.style.display = "none";
-
-            // 🧭 Pixel-perfect portrait aspect ratio + viewport fit
-            function maintainPortraitAspect() {
-              const containerWidth = container.clientWidth;
-              const containerHeight = container.clientHeight;
-              const aspectRatio = 9 / 16;
-              let canvasWidth, canvasHeight;
-
-              if (containerWidth / containerHeight > aspectRatio) {
-                canvasHeight = containerHeight;
-                canvasWidth = containerHeight * aspectRatio;
-              } else {
-                canvasWidth = containerWidth;
-                canvasHeight = containerWidth / aspectRatio;
-              }
-
-              canvas.style.width = canvasWidth + 'px';
-              canvas.style.height = canvasHeight + 'px';
-
-              const dpr = window.devicePixelRatio || 1;
-              canvas.width = canvasWidth * dpr;
-              canvas.height = canvasHeight * dpr;
-
-              if (unityInstance) unityInstance.SetFullscreen(0);
-            }
-
-            maintainPortraitAspect();
-            window.addEventListener('resize', () => {
-              updateViewportHeight();
-              maintainPortraitAspect();
-            });
-            window.addEventListener('orientationchange', () => {
-              updateViewportHeight();
-              maintainPortraitAspect();
-            });
-
-            // Ambient mode
-            function updateAmbientMode() {
-              try {
-                const tempCanvas = document.createElement('canvas');
-                const tempCtx = tempCanvas.getContext('2d');
-                tempCanvas.width = canvas.width;
-                tempCanvas.height = canvas.height;
-                tempCtx.drawImage(canvas, 0, 0);
-
-                const samplePoints = [
-                  { x: canvas.width * 0.25, y: canvas.height * 0.25 },
-                  { x: canvas.width * 0.75, y: canvas.height * 0.25 },
-                  { x: canvas.width * 0.5, y: canvas.height * 0.5 },
-                  { x: canvas.width * 0.25, y: canvas.height * 0.75 },
-                  { x: canvas.width * 0.75, y: canvas.height * 0.75 }
-                ];
-
-                let totalR = 0, totalG = 0, totalB = 0;
-                let validSamples = 0;
-
-                samplePoints.forEach(point => {
-                  const pixelData = tempCtx.getImageData(point.x, point.y, 1, 1).data;
-                  const r = pixelData[0];
-                  const g = pixelData[1];
-                  const b = pixelData[2];
-                  const brightness = (r + g + b) / 3;
-                  if (brightness > 20 && brightness < 235) {
-                    totalR += r;
-                    totalG += g;
-                    totalB += b;
-                    validSamples++;
-                  }
-                });
-
-                if (validSamples > 0) {
-                  const avgR = Math.round(totalR / validSamples);
-                  const avgG = Math.round(totalG / validSamples);
-                  const avgB = Math.round(totalB / validSamples);
-                  const ambientGradient = `radial-gradient(ellipse at center, rgba(${avgR}, ${avgG}, ${avgB}, 0.15) 0%, rgba(${avgR}, ${avgG}, ${avgB}, 0.05) 50%, transparent 70%)`;
-                  ambientOverlay.style.background = ambientGradient;
-                  ambientOverlay.classList.add('active');
-                } else {
-                  ambientOverlay.style.background = 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%)';
-                  ambientOverlay.classList.add('active');
-                }
-              } catch (error) {
-                ambientOverlay.style.background = 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.5) 0%, transparent 70%)';
-                ambientOverlay.classList.add('active');
-              }
-            }
-
-            setTimeout(() => {
-              updateAmbientMode();
-              setInterval(updateAmbientMode, 2000);
-            }, 1000);
-          }).catch((message) => {
-            alert(message);
-          });
-        };
-        document.body.appendChild(script);
-      }
+      loadingBar.style.display = "block";
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((instance) => {
+          unityInstance = instance;
+          loadingBar.style.display = "none";
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
     </script>
-  </body>
+</body>
 </html>
