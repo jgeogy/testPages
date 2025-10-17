@@ -3,13 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Zombie Land 2</title>
+    <title>Zombie Land 5</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico?v=2">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <!-- ✅ Viewport & canvas styling fix -->
     <style>
       html, body {
         margin: 0;
@@ -21,7 +20,6 @@
       #unity-container {
         position: relative;
         width: 100%;
-        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -30,7 +28,6 @@
       #unity-canvas {
         display: block;
         touch-action: none;
-        max-height: calc(var(--vh, 1vh) * 100);
         max-width: 100%;
       }
     </style>
@@ -73,7 +70,7 @@
       var ambientOverlay = document.querySelector("#ambient-overlay");
       var noticePopup = document.querySelector("#notice-popup");
       var noticeOkButton = document.querySelector("#notice-ok-button");
-      var unityInstance = null; // store unity instance globally for resizing
+      var unityInstance = null;
 
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
@@ -115,14 +112,15 @@
         document.getElementsByTagName('head')[0].appendChild(meta);
       }
 
-      // 📱 Mobile viewport height fix
-      function setViewportHeightVar() {
-        let vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      // ✅ Proper viewport sizing for mobile + tablets
+      function updateViewportHeight() {
+        const height = window.innerHeight;
+        container.style.height = height + 'px';
       }
-      window.addEventListener('resize', setViewportHeightVar);
-      window.addEventListener('orientationchange', setViewportHeightVar);
-      setViewportHeightVar();
+
+      window.addEventListener('resize', updateViewportHeight);
+      window.addEventListener('orientationchange', updateViewportHeight);
+      updateViewportHeight();
 
       // Notice popup logic
       noticePopup.classList.add('active');
@@ -133,7 +131,7 @@
           startGame();
         }, 300);
       });
-      
+
       function startGame() {
         loadingBar.style.display = "block";
         var script = document.createElement("script");
@@ -145,15 +143,13 @@
             unityInstance = instance;
             loadingBar.style.display = "none";
 
-            // 🧭 Pixel-perfect portrait aspect ratio
+            // 🧭 Pixel-perfect portrait aspect ratio + viewport fit
             function maintainPortraitAspect() {
-              const container = document.getElementById('unity-container');
-              const canvas = document.getElementById('unity-canvas');
               const containerWidth = container.clientWidth;
               const containerHeight = container.clientHeight;
-              const aspectRatio = 9/16;
+              const aspectRatio = 9 / 16;
               let canvasWidth, canvasHeight;
-              
+
               if (containerWidth / containerHeight > aspectRatio) {
                 canvasHeight = containerHeight;
                 canvasWidth = containerHeight * aspectRatio;
@@ -162,11 +158,9 @@
                 canvasHeight = containerWidth / aspectRatio;
               }
 
-              // Set CSS size
               canvas.style.width = canvasWidth + 'px';
               canvas.style.height = canvasHeight + 'px';
 
-              // ✅ Match actual pixel size to CSS size (fixes input offset)
               const dpr = window.devicePixelRatio || 1;
               canvas.width = canvasWidth * dpr;
               canvas.height = canvasHeight * dpr;
@@ -175,8 +169,14 @@
             }
 
             maintainPortraitAspect();
-            window.addEventListener('resize', maintainPortraitAspect);
-            window.addEventListener('orientationchange', maintainPortraitAspect);
+            window.addEventListener('resize', () => {
+              updateViewportHeight();
+              maintainPortraitAspect();
+            });
+            window.addEventListener('orientationchange', () => {
+              updateViewportHeight();
+              maintainPortraitAspect();
+            });
 
             // Ambient mode
             function updateAmbientMode() {
