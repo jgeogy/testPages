@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Zombie Land 1</title>
+    <title>Zombie Land 2</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico?v=2">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
@@ -170,9 +170,6 @@
               const dpr = window.devicePixelRatio || 1;
               canvas.width = canvasWidth * dpr;
               canvas.height = canvasHeight * dpr;
-
-              const ctx = canvas.getContext('2d');
-              ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
               if (unityInstance) unityInstance.SetFullscreen(0);
             }
