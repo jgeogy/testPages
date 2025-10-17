@@ -48,7 +48,7 @@
     </div>
     
     <div id="unity-container">
-      <canvas id="unity-canvas" width=720 height=1280 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -73,6 +73,7 @@
       var ambientOverlay = document.querySelector("#ambient-overlay");
       var noticePopup = document.querySelector("#notice-popup");
       var noticeOkButton = document.querySelector("#notice-ok-button");
+      var unityInstance = null; // store unity instance globally for resizing
 
       function unityShowBanner(msg, type) {
         function updateBannerVisibility() {
@@ -140,10 +141,11 @@
         script.onload = () => {
           createUnityInstance(canvas, config, (progress) => {
             progressBarFull.style.width = 100 * progress + "%";
-          }).then((unityInstance) => {
+          }).then((instance) => {
+            unityInstance = instance;
             loadingBar.style.display = "none";
 
-            // 🧭 Keep portrait 9:16 aspect ratio
+            // 🧭 Pixel-perfect portrait aspect ratio
             function maintainPortraitAspect() {
               const container = document.getElementById('unity-container');
               const canvas = document.getElementById('unity-canvas');
@@ -159,13 +161,25 @@
                 canvasWidth = containerWidth;
                 canvasHeight = containerWidth / aspectRatio;
               }
+
+              // Set CSS size
               canvas.style.width = canvasWidth + 'px';
               canvas.style.height = canvasHeight + 'px';
+
+              // ✅ Match actual pixel size to CSS size (fixes input offset)
+              const dpr = window.devicePixelRatio || 1;
+              canvas.width = canvasWidth * dpr;
+              canvas.height = canvasHeight * dpr;
+
+              const ctx = canvas.getContext('2d');
+              ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
               if (unityInstance) unityInstance.SetFullscreen(0);
             }
 
             maintainPortraitAspect();
             window.addEventListener('resize', maintainPortraitAspect);
+            window.addEventListener('orientationchange', maintainPortraitAspect);
 
             // Ambient mode
             function updateAmbientMode() {
