@@ -1,208 +1,103 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Color Cubes</title>
-  <link rel="shortcut icon" href="TemplateData/favicon.ico">
-  <link rel="stylesheet" href="TemplateData/style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background: #000;
-    }
-
-    #unity-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #unity-canvas {
-      background: #000;
-    }
-
-    /* 🔔 Popup overlay (dark background) */
-    #internet-warning {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 9999;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      animation: fadeIn 0.6s ease forwards;
-    }
-
-    /* 🔲 Popup box */
-    #popup-box {
-      background: #111;
-      border: 2px solid #4CAF50;
-      border-radius: 16px;
-      padding: 30px 40px;
-      text-align: center;
-      color: #fff;
-      max-width: 400px;
-      width: 85%;
-      box-shadow: 0 0 20px rgba(0, 255, 100, 0.3);
-      transform: scale(0.8);
-      opacity: 0;
-      animation: popupIn 0.6s ease forwards;
-    }
-
-    #popup-box h2 {
-      margin-top: 0;
-      font-size: 22px;
-      color: #4CAF50;
-    }
-
-    #popup-box p {
-      font-size: 16px;
-      margin: 10px 0 25px;
-      line-height: 1.4;
-    }
-
-    #popup-box button {
-      padding: 12px 28px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #4CAF50;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    #popup-box button:hover {
-      background: #45a049;
-      transform: scale(1.05);
-    }
-
-    /* ✨ Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes popupIn {
-      0% { opacity: 0; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-  </style>
-</head>
-
-<body>
-  <!-- 🌐 Popup appears BEFORE Unity loads -->
-  <div id="internet-warning">
-    <div id="popup-box">
-      <h2>Internet Connection Required</h2>
-      <p>This game requires an active internet connection.<br>
-         Please ensure you’re online before continuing.</p>
-      <button id="continueBtn">Continue</button>
-    </div>
-  </div>
-
-  <!-- Unity container -->
-  <div id="unity-container" style="display: none;">
-    <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
-    <div id="unity-loading-bar">
-      <div id="unity-logo"></div>
-      <div id="unity-progress-bar-empty">
-        <div id="unity-progress-bar-full"></div>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Color Paths</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+  </head>
+  <body>
+    <div id="unity-container">
+      <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
       </div>
+      <div id="unity-warning"> </div>
     </div>
-    <div id="unity-warning"></div>
-  </div>
+    <script>
+      window.addEventListener("load", function () {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("ServiceWorker.js");
+        }
+      });
 
-  <script>
-    const container = document.querySelector("#unity-container");
-    const canvas = document.querySelector("#unity-canvas");
-    const loadingBar = document.querySelector("#unity-loading-bar");
-    const progressBarFull = document.querySelector("#unity-progress-bar-full");
-    const warningBanner = document.querySelector("#unity-warning");
-    let unityInstance = null;
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var warningBanner = document.querySelector("#unity-warning");
 
-    function unityShowBanner(msg, type) {
-      // Default Unity banner handler (kept for compatibility)
-    }
-
-    // Handle portrait resizing
-    function resizeCanvas() {
-      const targetAspectRatio = 9 / 16;
-      const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
-      const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-
-      let newWidth, newHeight;
-      if (vw / vh > targetAspectRatio) {
-        newHeight = vh;
-        newWidth = newHeight * targetAspectRatio;
-      } else {
-        newWidth = vw;
-        newHeight = newWidth / targetAspectRatio;
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
       }
 
-      canvas.style.width = `${newWidth}px`;
-      canvas.style.height = `${newHeight}px`;
-    }
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', resizeCanvas);
-    }
-
-    // 🧩 Wait for user confirmation before loading Unity
-    document.getElementById("continueBtn").addEventListener("click", () => {
-      const popup = document.getElementById("internet-warning");
-      popup.style.animation = "fadeIn 0.4s reverse forwards";
-      setTimeout(() => {
-        popup.style.display = "none";
-        container.style.display = "flex";
-        loadUnityGame();
-      }, 400);
-    });
-
-    function loadUnityGame() {
-      const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/Webgl.loader.js";
-      const config = {
-        dataUrl: buildUrl + "/Webgl.data",
-        frameworkUrl: buildUrl + "/Webgl.framework.js",
-        codeUrl: buildUrl + "/Webgl.wasm",
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/d8d47b0958d237790c07dd726c760c61.data.br",
+        frameworkUrl: buildUrl + "/173ca2f7605f2222ca5f80312b3e787e.framework.js.br",
+        codeUrl: buildUrl + "/880fc1ea813cc53c5b5f2184e1205567.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "Zestful Games",
-        productName: "Color Cubes",
-        productVersion: "1",
+        companyName: "zestful",
+        productName: "Color Paths",
+        productVersion: "0.5",
         showBanner: unityShowBanner,
       };
 
+      // By default Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      }
+
       loadingBar.style.display = "block";
-      const script = document.createElement("script");
+
+      var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
-        }).then((instance) => {
-          unityInstance = instance;
+        }).then((unityInstance) => {
           loadingBar.style.display = "none";
         }).catch((message) => {
           alert(message);
         });
       };
       document.body.appendChild(script);
-    }
-  </script>
-</body>
+    </script>
+  </body>
 </html>
