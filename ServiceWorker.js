@@ -1,9 +1,9 @@
 const cacheName = "zestful-Color Paths-0.5";
 const contentToCache = [
-    "Build/7a2dbded24d57e056180125b1583e7c4.loader.js",
-    "Build/173ca2f7605f2222ca5f80312b3e787e.framework.js.br",
-    "Build/d8d47b0958d237790c07dd726c760c61.data.br",
-    "Build/880fc1ea813cc53c5b5f2184e1205567.wasm.br",
+    "Build/ea153e321edf23b9a40b38d65ce41d01.loader.js",
+    "Build/173ca2f7605f2222ca5f80312b3e787e.framework.js",
+    "Build/8c33da6a6586ab7ae052dcc0cfc65158.data",
+    "Build/87860e04775a65e839a8f01d294199ca.wasm",
     "TemplateData/style.css"
 
 ];
