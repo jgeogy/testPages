@@ -1,5 +1,41 @@
-#unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
-#unity-logo { width: 154px; height: 130px; background: url('unity-logo-dark.png') no-repeat center }
-#unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; margin-left: 6.5px; background: url('progress-bar-empty-dark.png') no-repeat center }
-#unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
-#unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
+#unity-loading-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    width: 35vw; /* Responsive width */
+    max-width: 180px; /* Prevent too large on desktop */
+    text-align: center;
+}
+
+#unity-logo {
+    width: 100%;
+    aspect-ratio: 154 / 130;
+    background: url('unity-logo-dark.png') no-repeat center;
+    background-size: contain;
+}
+
+#unity-progress-bar-empty {
+    width: 100%;
+    aspect-ratio: 141 / 18;
+    margin-top: 12px;
+    background: url('progress-bar-empty-dark.png') no-repeat center;
+    background-size: contain;
+}
+
+#unity-progress-bar-full {
+    height: 100%;
+    background: url('progress-bar-full-dark.png') no-repeat center;
+    background-size: contain;
+}
+
+#unity-warning {
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%);
+    background: white;
+    padding: 10px;
+    display: none;
+}
