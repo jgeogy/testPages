@@ -1,208 +1,235 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Color Cubes</title>
-  <link rel="shortcut icon" href="TemplateData/favicon.ico">
-  <link rel="stylesheet" href="TemplateData/style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>ZombieLand</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background: #000;
-    }
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+        }
 
-    #unity-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        #unity-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
 
-    #unity-canvas {
-      background: #000;
-    }
+        #unity-canvas {
+            background: #000;
+        }
 
-    /* 🔔 Popup overlay (dark background) */
-    #internet-warning {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 9999;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      animation: fadeIn 0.6s ease forwards;
-    }
+        /* ===================== INTERNET POPUP ===================== */
+        #internet-warning {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            font-family: 'Segoe UI', sans-serif;
+            animation: fadeIn 0.6s ease forwards;
+        }
 
-    /* 🔲 Popup box */
-    #popup-box {
-      background: #111;
-      border: 2px solid #4CAF50;
-      border-radius: 16px;
-      padding: 30px 40px;
-      text-align: center;
-      color: #fff;
-      max-width: 400px;
-      width: 85%;
-      box-shadow: 0 0 20px rgba(0, 255, 100, 0.3);
-      transform: scale(0.8);
-      opacity: 0;
-      animation: popupIn 0.6s ease forwards;
-    }
+        #popup-box {
+            background: #111;
+            border: 2px solid #00ff44;
+            border-radius: 16px;
+            padding: 30px 40px;
+            text-align: center;
+            color: #fff;
+            max-width: 420px;
+            width: 85%;
+            box-shadow: 0 0 25px rgba(0,255,0,0.5);
+            animation: popupIn 0.5s ease forwards;
+        }
 
-    #popup-box h2 {
-      margin-top: 0;
-      font-size: 22px;
-      color: #4CAF50;
-    }
+            #popup-box h2 {
+                margin: 0;
+                font-size: 22px;
+                color: #31ff66;
+            }
 
-    #popup-box p {
-      font-size: 16px;
-      margin: 10px 0 25px;
-      line-height: 1.4;
-    }
+            #popup-box p {
+                font-size: 16px;
+                margin: 14px 0 26px;
+                line-height: 1.4rem;
+            }
 
-    #popup-box button {
-      padding: 12px 28px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #4CAF50;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
+        #continueBtn {
+            padding: 12px 26px;
+            font-size: 16px;
+            border: none;
+            border-radius: 9px;
+            background: #31ff66;
+            color: #000;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-    #popup-box button:hover {
-      background: #45a049;
-      transform: scale(1.05);
-    }
+            #continueBtn:hover:enabled {
+                background: #55ff88;
+                transform: scale(1.05);
+            }
 
-    /* ✨ Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+            #continueBtn:disabled {
+                opacity: .45;
+                cursor: not-allowed;
+            }
 
-    @keyframes popupIn {
-      0% { opacity: 0; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-  </style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes popupIn {
+            from {
+                opacity: 0;
+                transform: scale(.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <!-- 🌐 Popup appears BEFORE Unity loads -->
-  <div id="internet-warning">
-    <div id="popup-box">
-      <h2>Internet Connection Required</h2>
-      <p>This game requires an active internet connection.<br>
-         Please ensure you’re online before continuing.</p>
-      <button id="continueBtn">Continue</button>
+
+    <!-- 🌐 POPUP BEFORE UNITY LOAD -->
+    <div id="internet-warning">
+        <div id="popup-box">
+            <h2>Internet Connection Required</h2>
+            <p>
+                This game requires an active internet connection.<br>
+                Ensure you are online before continuing.
+            </p>
+            <button id="continueBtn">Continue</button>
+        </div>
     </div>
-  </div>
 
-  <!-- Unity container -->
-  <div id="unity-container" style="display: none;">
-    <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
-    <div id="unity-loading-bar">
-      <div id="unity-logo"></div>
-      <div id="unity-progress-bar-empty">
-        <div id="unity-progress-bar-full"></div>
-      </div>
+    <!-- UNITY GAME -->
+    <div id="unity-container">
+        <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
+        <div id="unity-loading-bar">
+            <div id="unity-logo"></div>
+            <div id="unity-progress-bar-empty">
+                <div id="unity-progress-bar-full"></div>
+            </div>
+        </div>
+        <div id="unity-warning"></div>
     </div>
-    <div id="unity-warning"></div>
-  </div>
 
-  <script>
-    const container = document.querySelector("#unity-container");
-    const canvas = document.querySelector("#unity-canvas");
-    const loadingBar = document.querySelector("#unity-loading-bar");
-    const progressBarFull = document.querySelector("#unity-progress-bar-full");
-    const warningBanner = document.querySelector("#unity-warning");
-    let unityInstance = null;
+    <script>
+        const container = document.getElementById("unity-container");
+        const canvas = document.getElementById("unity-canvas");
+        const loadingBar = document.getElementById("unity-loading-bar");
+        const progressBarFull = document.getElementById("unity-progress-bar-full");
+        const popup = document.getElementById("internet-warning");
+        const continueBtn = document.getElementById("continueBtn");
 
-    function unityShowBanner(msg, type) {
-      // Default Unity banner handler (kept for compatibility)
-    }
+        let unityInstance = null;
 
-    // Handle portrait resizing
-    function resizeCanvas() {
-      const targetAspectRatio = 9 / 16;
-      const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
-      const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        function unityShowBanner(msg, type) { }
 
-      let newWidth, newHeight;
-      if (vw / vh > targetAspectRatio) {
-        newHeight = vh;
-        newWidth = newHeight * targetAspectRatio;
-      } else {
-        newWidth = vw;
-        newHeight = newWidth / targetAspectRatio;
-      }
+        // RESPONSIVE PORTRAIT CANVAS
+        function resizeCanvas() {
+            const targetAspectRatio = 9 / 16;
+            const vw = window.visualViewport?.width || window.innerWidth;
+            const vh = window.visualViewport?.height || window.innerHeight;
+            let w, h;
 
-      canvas.style.width = `${newWidth}px`;
-      canvas.style.height = `${newHeight}px`;
-    }
+            if (vw / vh > targetAspectRatio) {
+                h = vh; w = h * targetAspectRatio;
+            } else {
+                w = vw; h = w / targetAspectRatio;
+            }
 
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', resizeCanvas);
-    }
+            canvas.style.width = w + "px";
+            canvas.style.height = h + "px";
+        }
+        resizeCanvas();
+        window.visualViewport?.addEventListener('resize', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
 
-    // 🧩 Wait for user confirmation before loading Unity
-    document.getElementById("continueBtn").addEventListener("click", () => {
-      const popup = document.getElementById("internet-warning");
-      popup.style.animation = "fadeIn 0.4s reverse forwards";
-      setTimeout(() => {
-        popup.style.display = "none";
-        container.style.display = "flex";
-        loadUnityGame();
-      }, 400);
-    });
+        // ===================== INTERNET CHECK =====================
+        function updatePopup() {
+            if (navigator.onLine) {
+                continueBtn.disabled = false;
+            } else {
+                continueBtn.disabled = true;
+                popup.style.display = "flex";
+            }
+        }
 
-    function loadUnityGame() {
-      const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/Webgl.loader.js";
-      const config = {
-        dataUrl: buildUrl + "/Webgl.data",
-        frameworkUrl: buildUrl + "/Webgl.framework.js",
-        codeUrl: buildUrl + "/Webgl.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Zestful Games",
-        productName: "Color Cubes",
-        productVersion: "1",
-        showBanner: unityShowBanner,
-      };
-
-      loadingBar.style.display = "block";
-      const script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((instance) => {
-          unityInstance = instance;
-          loadingBar.style.display = "none";
-        }).catch((message) => {
-          alert(message);
+        continueBtn.addEventListener("click", () => {
+            if (!navigator.onLine) return;
+            popup.style.display = "none";
+            container.style.display = "flex";
+            loadUnity();
         });
-      };
-      document.body.appendChild(script);
-    }
-  </script>
+
+        window.addEventListener("online", updatePopup);
+        window.addEventListener("offline", updatePopup);
+
+        updatePopup();
+
+        // ===================== UNITY LOADER =====================
+        function loadUnity() {
+            const buildUrl = "Build";
+            const loaderUrl = buildUrl + "/Webgl.loader.js";
+            const config = {
+                dataUrl: buildUrl + "/Webgl.data",
+                frameworkUrl: buildUrl + "/Webgl.framework.js",
+                codeUrl: buildUrl + "/Webgl.wasm",
+                streamingAssetsUrl: "StreamingAssets",
+                companyName: "Zestful Games",
+                productName: "Zombie Land",
+                productVersion: "2",
+                showBanner: unityShowBanner
+            };
+
+            loadingBar.style.display = "block";
+            const script = document.createElement("script");
+            script.src = loaderUrl;
+            script.onload = () => {
+                createUnityInstance(canvas, config, progress => {
+                    progressBarFull.style.width = (100 * progress) + "%";
+                }).then(instance => {
+                    unityInstance = instance;
+                    loadingBar.style.display = "none";
+
+                    // If connection drops mid-play → return popup
+                    window.addEventListener("offline", () => {
+                        popup.style.display = "flex";
+                        continueBtn.disabled = true;
+                    });
+
+                }).catch(alert);
+            };
+            document.body.appendChild(script);
+        }
+    </script>
 </body>
 </html>
