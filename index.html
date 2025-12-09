@@ -1,103 +1,156 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Color Paths</title>
+    <title>ZombieLand</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-    <link rel="manifest" href="manifest.webmanifest">
-  </head>
-  <body>
-    <div id="unity-container">
-      <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #unity-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #unity-canvas {
+            display: block;
+            touch-action: none;
+        }
+
+        /* 🔹 ADDED Popup styling */
+        #connection-popup {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 22px;
+            text-align: center;
+        }
+
+        #popup-ok {
+            margin-top: 20px;
+            padding: 10px 22px;
+            background: #0066ff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="connection-popup">
+        <!-- 🔹 ADDED -->
+        <div>⚠ Internet Connection Required</div>
+        <button id="popup-ok">OK</button>
     </div>
+
+    <div id="unity-container">
+        <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
+        <div id="unity-loading-bar">
+            <div id="unity-logo"></div>
+            <div id="unity-progress-bar-empty">
+                <div id="unity-progress-bar-full"></div>
+            </div>
+        </div>
+        <div id="unity-warning"></div>
+    </div>
+
     <script>
-      window.addEventListener("load", function () {
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.register("ServiceWorker.js");
+
+        var container = document.querySelector("#unity-container");
+        var canvas = document.querySelector("#unity-canvas");
+        var loadingBar = document.querySelector("#unity-loading-bar");
+        var progressBarFull = document.querySelector("#unity-progress-bar-full");
+        var warningBanner = document.querySelector("#unity-warning");
+        var unityInstance = null;
+
+        // 16:9 Resize Logic
+        function resizeCanvas() {
+            let screenW = window.innerWidth;
+            let screenH = window.innerHeight;
+
+            let targetRatio = 9 / 16;        // Portrait Ratio
+            let currentRatio = screenW / screenH;
+
+            if (currentRatio > targetRatio) {
+                // Screen too wide → match height
+                canvas.style.height = screenH + "px";
+                canvas.style.width = (screenH * targetRatio) + "px";
+            } else {
+                // Screen too tall → match width
+                canvas.style.width = screenW + "px";
+                canvas.style.height = (screenW / targetRatio) + "px";
+            }
         }
-      });
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
 
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var warningBanner = document.querySelector("#unity-warning");
+        var buildUrl = "Build";
+        var loaderUrl = buildUrl + "/Webgl.loader.js";
+        var config = {
+            dataUrl: buildUrl + "/Webgl.data",
+            frameworkUrl: buildUrl + "/Webgl.framework.js",
+            codeUrl: buildUrl + "/Webgl.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "ZestfulGames",
+            productName: "ZombieLand",
+            productVersion: "2",
+        };
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        config.matchWebGLToCanvasSize = false;
+
+        document.getElementById("popup-ok").onclick = function () {
+            document.getElementById("connection-popup").style.display = "none";
+            startUnityGame();
+        };
+
+        function startUnityGame() {
+            loadingBar.style.display = "block";
+            var script = document.createElement("script");
+            script.src = loaderUrl;
+            script.onload = () => {
+                createUnityInstance(canvas, config, (progress) => {
+                    progressBarFull.style.width = (100 * progress) + "%";
+                }).then((instance) => {
+                    unityInstance = instance;
+                    loadingBar.style.display = "none";
+                }).catch((message) => {
+                    alert(message);
+                });
+            };
+            document.body.appendChild(script);
         }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/ea153e321edf23b9a40b38d65ce41d01.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/8c33da6a6586ab7ae052dcc0cfc65158.data",
-        frameworkUrl: buildUrl + "/173ca2f7605f2222ca5f80312b3e787e.framework.js",
-        codeUrl: buildUrl + "/87860e04775a65e839a8f01d294199ca.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "zestful",
-        productName: "Color Paths",
-        productVersion: "0.5",
-        showBanner: unityShowBanner,
-      };
-
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-      }
-
-      loadingBar.style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-      document.body.appendChild(script);
     </script>
-  </body>
+
+</body>
 </html>
