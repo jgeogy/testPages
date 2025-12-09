@@ -1,156 +1,208 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>ZombieLand</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Color Cubes</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <link rel="stylesheet" href="TemplateData/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background: #000;
-        }
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: #000;
+    }
 
-        #unity-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    #unity-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        #unity-canvas {
-            display: block;
-            touch-action: none;
-        }
+    #unity-canvas {
+      background: #000;
+    }
 
-        /* 🔹 ADDED Popup styling */
-        #connection-popup {
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            font-size: 22px;
-            text-align: center;
-        }
+    /* 🔔 Popup overlay (dark background) */
+    #internet-warning {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      animation: fadeIn 0.6s ease forwards;
+    }
 
-        #popup-ok {
-            margin-top: 20px;
-            padding: 10px 22px;
-            background: #0066ff;
-            border: none;
-            border-radius: 6px;
-            font-size: 18px;
-            cursor: pointer;
-            color: white;
-        }
-    </style>
+    /* 🔲 Popup box */
+    #popup-box {
+      background: #111;
+      border: 2px solid #4CAF50;
+      border-radius: 16px;
+      padding: 30px 40px;
+      text-align: center;
+      color: #fff;
+      max-width: 400px;
+      width: 85%;
+      box-shadow: 0 0 20px rgba(0, 255, 100, 0.3);
+      transform: scale(0.8);
+      opacity: 0;
+      animation: popupIn 0.6s ease forwards;
+    }
+
+    #popup-box h2 {
+      margin-top: 0;
+      font-size: 22px;
+      color: #4CAF50;
+    }
+
+    #popup-box p {
+      font-size: 16px;
+      margin: 10px 0 25px;
+      line-height: 1.4;
+    }
+
+    #popup-box button {
+      padding: 12px 28px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    #popup-box button:hover {
+      background: #45a049;
+      transform: scale(1.05);
+    }
+
+    /* ✨ Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popupIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
 </head>
 
 <body>
-    <div id="connection-popup">
-        <!-- 🔹 ADDED -->
-        <div>⚠ Internet Connection Required</div>
-        <button id="popup-ok">OK</button>
+  <!-- 🌐 Popup appears BEFORE Unity loads -->
+  <div id="internet-warning">
+    <div id="popup-box">
+      <h2>Internet Connection Required</h2>
+      <p>This game requires an active internet connection.<br>
+         Please ensure you’re online before continuing.</p>
+      <button id="continueBtn">Continue</button>
     </div>
+  </div>
 
-    <div id="unity-container">
-        <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
-        <div id="unity-loading-bar">
-            <div id="unity-logo"></div>
-            <div id="unity-progress-bar-empty">
-                <div id="unity-progress-bar-full"></div>
-            </div>
-        </div>
-        <div id="unity-warning"></div>
+  <!-- Unity container -->
+  <div id="unity-container" style="display: none;">
+    <canvas id="unity-canvas" width="720" height="1280" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
     </div>
+    <div id="unity-warning"></div>
+  </div>
 
-    <script>
+  <script>
+    const container = document.querySelector("#unity-container");
+    const canvas = document.querySelector("#unity-canvas");
+    const loadingBar = document.querySelector("#unity-loading-bar");
+    const progressBarFull = document.querySelector("#unity-progress-bar-full");
+    const warningBanner = document.querySelector("#unity-warning");
+    let unityInstance = null;
 
-        var container = document.querySelector("#unity-container");
-        var canvas = document.querySelector("#unity-canvas");
-        var loadingBar = document.querySelector("#unity-loading-bar");
-        var progressBarFull = document.querySelector("#unity-progress-bar-full");
-        var warningBanner = document.querySelector("#unity-warning");
-        var unityInstance = null;
+    function unityShowBanner(msg, type) {
+      // Default Unity banner handler (kept for compatibility)
+    }
 
-        // 16:9 Resize Logic
-        function resizeCanvas() {
-            let screenW = window.innerWidth;
-            let screenH = window.innerHeight;
+    // Handle portrait resizing
+    function resizeCanvas() {
+      const targetAspectRatio = 9 / 16;
+      const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+      const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
 
-            let targetRatio = 9 / 16;        // Portrait Ratio
-            let currentRatio = screenW / screenH;
+      let newWidth, newHeight;
+      if (vw / vh > targetAspectRatio) {
+        newHeight = vh;
+        newWidth = newHeight * targetAspectRatio;
+      } else {
+        newWidth = vw;
+        newHeight = newWidth / targetAspectRatio;
+      }
 
-            if (currentRatio > targetRatio) {
-                // Screen too wide → match height
-                canvas.style.height = screenH + "px";
-                canvas.style.width = (screenH * targetRatio) + "px";
-            } else {
-                // Screen too tall → match width
-                canvas.style.width = screenW + "px";
-                canvas.style.height = (screenW / targetRatio) + "px";
-            }
-        }
-        window.addEventListener("resize", resizeCanvas);
-        resizeCanvas();
+      canvas.style.width = `${newWidth}px`;
+      canvas.style.height = `${newHeight}px`;
+    }
 
-        var buildUrl = "Build";
-        var loaderUrl = buildUrl + "/Webgl.loader.js";
-        var config = {
-            dataUrl: buildUrl + "/Webgl.data",
-            frameworkUrl: buildUrl + "/Webgl.framework.js",
-            codeUrl: buildUrl + "/Webgl.wasm",
-            streamingAssetsUrl: "StreamingAssets",
-            companyName: "ZestfulGames",
-            productName: "ZombieLand",
-            productVersion: "2",
-        };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', resizeCanvas);
+    }
 
-        config.matchWebGLToCanvasSize = false;
+    // 🧩 Wait for user confirmation before loading Unity
+    document.getElementById("continueBtn").addEventListener("click", () => {
+      const popup = document.getElementById("internet-warning");
+      popup.style.animation = "fadeIn 0.4s reverse forwards";
+      setTimeout(() => {
+        popup.style.display = "none";
+        container.style.display = "flex";
+        loadUnityGame();
+      }, 400);
+    });
 
-        document.getElementById("popup-ok").onclick = function () {
-            document.getElementById("connection-popup").style.display = "none";
-            startUnityGame();
-        };
+    function loadUnityGame() {
+      const buildUrl = "Build";
+      const loaderUrl = buildUrl + "/Webgl.loader.js";
+      const config = {
+        dataUrl: buildUrl + "/Webgl.data",
+        frameworkUrl: buildUrl + "/Webgl.framework.js",
+        codeUrl: buildUrl + "/Webgl.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Zestful Games",
+        productName: "Color Cubes",
+        productVersion: "1",
+        showBanner: unityShowBanner,
+      };
 
-        function startUnityGame() {
-            loadingBar.style.display = "block";
-            var script = document.createElement("script");
-            script.src = loaderUrl;
-            script.onload = () => {
-                createUnityInstance(canvas, config, (progress) => {
-                    progressBarFull.style.width = (100 * progress) + "%";
-                }).then((instance) => {
-                    unityInstance = instance;
-                    loadingBar.style.display = "none";
-                }).catch((message) => {
-                    alert(message);
-                });
-            };
-            document.body.appendChild(script);
-        }
-
-    </script>
-
+      loadingBar.style.display = "block";
+      const script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((instance) => {
+          unityInstance = instance;
+          loadingBar.style.display = "none";
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    }
+  </script>
 </body>
 </html>
